@@ -36,7 +36,7 @@ export default function Navbar() {
                 >
                     <ul className="navbar-nav align-items-center gap-lg-4">
                         <li className="nav-item">
-                            <a className="nav-link active" href="#beranda">
+                            <a className="nav-link" href="#beranda">
                                 Beranda
                             </a>
                         </li>
