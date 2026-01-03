@@ -1,12 +1,14 @@
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 export default function UserLayout({ children }) {
     return (
         <>
             <Navbar />
-            <div style={{ marginTop: '96px' }}>
+            <main className="page-wrapper">
                 {children}
-            </div>
+            </main>
+            <Footer />
         </>
     );
 }

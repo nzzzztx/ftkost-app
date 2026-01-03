@@ -2,8 +2,6 @@ export default function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white fixed-top navbar-main">
             <div className="container-fluid px-5">
-
-                {/* BRAND */}
                 <a
                     href="#beranda"
                     className="navbar-brand d-flex align-items-center gap-2"
@@ -20,7 +18,6 @@ export default function Navbar() {
                     </span>
                 </a>
 
-                {/* TOGGLER (MOBILE) */}
                 <button
                     className="navbar-toggler"
                     type="button"
@@ -33,7 +30,6 @@ export default function Navbar() {
                     <span className="navbar-toggler-icon" />
                 </button>
 
-                {/* MENU */}
                 <div
                     className="collapse navbar-collapse justify-content-end"
                     id="navbarMain"
@@ -72,7 +68,7 @@ export default function Navbar() {
 
                     {/* CTA */}
                     <a
-                        href="#sewa"
+                        href="https://wa.me/"
                         className="btn btn-primary btn-pill ms-lg-4"
                     >
                         Sewa Sekarang

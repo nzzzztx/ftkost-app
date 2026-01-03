@@ -110,7 +110,7 @@ export default function Hero() {
                                 <span className="hero__facIcon">
                                     <img src="/icons/wifi.svg" alt="Wifi" />
                                 </span>
-                                Wifi kecepatan 100Mbps
+                                Wifi kecepatan 1000Mbps
                             </div>
 
                             <div className="hero__facItem">
@@ -124,21 +124,21 @@ export default function Hero() {
                                 <span className="hero__facIcon">
                                     <img src="/icons/car.svg" alt="Parkir Mobil" />
                                 </span>
-                                Parkir mobil luas
+                                Parkir mobil
                             </div>
 
                             <div className="hero__facItem">
                                 <span className="hero__facIcon">
                                     <img src="/icons/cleaning.svg" alt="Cleaning" />
                                 </span>
-                                Cleaning service harian
+                                Cleaning service
                             </div>
 
                             <div className="hero__facItem">
                                 <span className="hero__facIcon">
                                     <img src="/icons/bike.svg" alt="Parkir Motor" />
                                 </span>
-                                Parkir motor luas
+                                Parkir motor
                             </div>
 
                             <div className="hero__facItem">
