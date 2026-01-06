@@ -1,15 +1,41 @@
+import { useState, useEffect, useRef } from 'react';
+
 export default function RoomType({ kosList = [], loading = false }) {
-    console.log('ROOMTYPE kosList:', kosList);
-    console.log('ROOMTYPE loading:', loading);
+    const [isMobile, setIsMobile] = useState(false);
+    const scrollRef = useRef(null); // 🔥 tambahan
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const allRooms = kosList.flatMap((kos) =>
+        (kos.rooms || []).map((room) => ({
+            ...room,
+            kos,
+        }))
+    );
+
+    // 🔥 TIDAK PAKAI carousel slide logic lagi
+    const scroll = (direction) => {
+        if (!scrollRef.current) return;
+        const amount = isMobile ? 360 : 420;
+        scrollRef.current.scrollBy({
+            left: direction === 'next' ? amount : -amount,
+            behavior: 'smooth',
+        });
+    };
 
     return (
         <section id="tipe-kamar" className="room-section">
-            <div className="container">
+            <div className="container position-relative">
 
-                {/* ================= HEADER ================= */}
+                {/* HEADER */}
                 <div className="room-header text-center">
                     <h2>
-                        <span className="text-primary">TIPE</span>{" "}
+                        <span className="text-primary">TIPE</span>{' '}
                         <span className="text-warning">KAMAR</span>
                     </h2>
                     <p>
@@ -18,154 +44,135 @@ export default function RoomType({ kosList = [], loading = false }) {
                     </p>
                 </div>
 
-                {/* ================= OUTER CAROUSEL ================= */}
-                {!loading && kosList.length > 0 && (
-                    <div
-                        id="roomTypeCarousel"
-                        className="carousel slide"
-                        data-bs-ride="carousel"
-                    >
-                        <div className="carousel-inner">
+                {!loading && allRooms.length > 0 && (
+                    <>
+                        {/* 🔥 OUTER BUTTON – MANUAL
+                        <button
+                            type="button"
+                            className="room-outer-btn room-outer-btn--left"
+                            onClick={() => scroll('prev')}
+                        >
+                            ‹
+                        </button>
 
-                            {kosList.flatMap((kos) =>
-                                kos.rooms?.map((room, index) => (
-                                    <div
-                                        key={room.id}
-                                        className={`carousel-item ${index === 0 ? 'active' : ''}`}
-                                    >
-                                        {/* ================= ROOM CARD ================= */}
-                                        <div className="room-card-wrapper">
+                        <button
+                            type="button"
+                            className="room-outer-btn room-outer-btn--left"
+                            onClick={() => scroll('prev')}
+                        >
+                            ‹
+                        </button> */}
 
-                                            <div className="room-card">
+                        {/* 🔥 GANTI FUNGSI: BUKAN BOOTSTRAP CAROUSEL */}
+                        <div
+                            id="roomTypeCarousel"
+                            className="room-scroll-wrapper"
+                            ref={scrollRef}
+                        >
+                            <div className="room-slide">
+                                {allRooms.map(room => (
+                                    <div key={room.id} className="room-card-wrapper">
+                                        <div className="room-card">
 
-                                                {/* ===== FOTO / INNER CAROUSEL ===== */}
-                                                <div
-                                                    id={`room-${room.id}`}
-                                                    className="carousel slide room-carousel"
-                                                    data-bs-ride="carousel"
-                                                >
-                                                    <div className="carousel-inner">
-
-                                                        {room.photos && room.photos.length > 0 ? (
-                                                            room.photos.map((photo, i) => (
-                                                                <div
-                                                                    key={photo.id}
-                                                                    className={`carousel-item ${i === 0 ? 'active' : ''}`}
-                                                                >
-                                                                    <img
-                                                                        src={photo.url}
-                                                                        alt={room.nama}
-                                                                        className="w-100"
-                                                                    />
-                                                                </div>
-                                                            ))
-                                                        ) : (
-                                                            <div className="carousel-item active">
-                                                                <img
-                                                                    src="/images/room-placeholder.jpg"
-                                                                    alt="No image"
-                                                                    className="w-100"
-                                                                />
+                                            {/* INNER CAROUSEL FOTO – TETAP */}
+                                            <div
+                                                id={`inner-carousel-${room.id}`}
+                                                className="carousel slide room-carousel"
+                                                data-bs-interval="false"
+                                            >
+                                                <div className="carousel-inner">
+                                                    {room.photos?.length ? (
+                                                        room.photos.map((photo, i) => (
+                                                            <div
+                                                                key={i}
+                                                                className={`carousel-item ${i === 0 ? 'active' : ''}`}
+                                                            >
+                                                                <img src={photo.url} alt={room.nama} />
                                                             </div>
-                                                        )}
-
-                                                    </div>
-
-                                                    <button
-                                                        className="carousel-control-prev"
-                                                        type="button"
-                                                        data-bs-target={`#room-${room.id}`}
-                                                        data-bs-slide="prev"
-                                                    >
-                                                        <span className="carousel-control-prev-icon" />
-                                                    </button>
-
-                                                    <button
-                                                        className="carousel-control-next"
-                                                        type="button"
-                                                        data-bs-target={`#room-${room.id}`}
-                                                        data-bs-slide="next"
-                                                    >
-                                                        <span className="carousel-control-next-icon" />
-                                                    </button>
+                                                        ))
+                                                    ) : (
+                                                        <div className="carousel-item active">
+                                                            <img src="/images/room-placeholder.jpg" />
+                                                        </div>
+                                                    )}
                                                 </div>
 
-                                                {/* ===== BODY ===== */}
-                                                <div className="room-body">
-                                                    <h5>{room.nama}</h5>
+                                                <button
+                                                    className="carousel-control-prev inner-nav-btn"
+                                                    type="button"
+                                                    data-bs-target={`#inner-carousel-${room.id}`}
+                                                    data-bs-slide="prev"
+                                                />
+                                                <button
+                                                    className="carousel-control-next inner-nav-btn"
+                                                    type="button"
+                                                    data-bs-target={`#inner-carousel-${room.id}`}
+                                                    data-bs-slide="next"
+                                                />
+                                            </div>
 
-                                                    <div className="room-price">
-                                                        Rp {room.harga_bulanan?.toLocaleString('id-ID')}
-                                                        <span> / bulan</span>
+                                            <div className="room-body">
+                                                {/* Nama Kamar */}
+                                                <h5 className="room-title">{room.nama}</h5>
+
+                                                {/* Nama Rumah Kos */}
+                                                <div className="room-kos-name">
+                                                    {room.kos?.nama ?? 'Rumah Kos'}
+                                                </div>
+
+                                                {/* Harga */}
+                                                <div className="room-price">
+                                                    Rp {room.harga_bulanan?.toLocaleString('id-ID')}
+                                                    <span> / bulan</span>
+                                                </div>
+
+                                                {/* Harga Harian (opsional) */}
+                                                {room.harga_harian && (
+                                                    <div className="room-price-daily">
+                                                        Rp {room.harga_harian.toLocaleString('id-ID')} / hari
                                                     </div>
+                                                )}
 
-                                                    <div className="room-tags">
-                                                        <span>{room.aturan_gender}</span>
-                                                        <span>Kapasitas {room.kapasitas}</span>
-                                                        <span>Lantai {room.lantai}</span>
-                                                    </div>
+                                                {/* Info Ringkas */}
+                                                <div className="room-meta">
+                                                    <span>{room.aturan_gender}</span>
+                                                    <span>Lantai {room.lantai}</span>
+                                                    <span>Kapasitas {room.kapasitas}</span>
+                                                </div>
 
-                                                    {/* ===== FASILITAS ===== */}
+                                                {/* Fasilitas (dibatasi max 6 biar rapi) */}
+                                                {room.facilities && room.facilities.length > 0 && (
                                                     <ul className="room-facilities badges">
-                                                        {room.facilities && room.facilities.length > 0 ? (
-                                                            room.facilities.map((f) => (
-                                                                <li key={f.id} className="facility-badge">
-                                                                    {f.name}
-                                                                </li>
-                                                            ))
-                                                        ) : (
-                                                            <li className="facility-empty">
-                                                                Fasilitas belum tersedia
+                                                        {room.facilities.slice(0, 8).map((f) => (
+                                                            <li key={f.id} className="facility-badge">
+                                                                {f.name}
+                                                            </li>
+                                                        ))}
+                                                        {room.facilities.length > 8 && (
+                                                            <li className="facility-badge more">
+                                                                +{room.facilities.length - 8} lainnya
                                                             </li>
                                                         )}
                                                     </ul>
+                                                )}
 
-                                                    <a
-                                                        href="https://wa.me/"
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="btn btn-primary btn-pill w-100"
-                                                    >
-                                                        Chat Pemilik Kos
-                                                    </a>
-                                                </div>
-
+                                                {/* CTA */}
+                                                <a
+                                                    href={`https://wa.me/?text=Halo, saya tertarik dengan kamar ${room.nama}`}
+                                                    className="btn btn-warning w-100 fw-bold mt-3"
+                                                >
+                                                    Chat Pemilik Kos
+                                                </a>
                                             </div>
+
+
                                         </div>
                                     </div>
-                                ))
-                            )}
-
+                                ))}
+                            </div>
                         </div>
-
-                        {/* ===== OUTER CONTROLS ===== */}
-                        <button
-                            className="carousel-control-prev"
-                            type="button"
-                            data-bs-target="#roomTypeCarousel"
-                            data-bs-slide="prev"
-                        >
-                            <span className="carousel-control-prev-icon" />
-                        </button>
-
-                        <button
-                            className="carousel-control-next"
-                            type="button"
-                            data-bs-target="#roomTypeCarousel"
-                            data-bs-slide="next"
-                        >
-                            <span className="carousel-control-next-icon" />
-                        </button>
-                    </div>
+                    </>
                 )}
-
-                {/* ================= FALLBACK STATIC (TETAP ADA) ================= */}
-                <div className="room-grid">
-                    <div className="room-card">{/* static A */}</div>
-                    <div className="room-card highlight">{/* static B */}</div>
-                    <div className="room-card">{/* static C */}</div>
-                </div>
-
             </div>
         </section>
     );

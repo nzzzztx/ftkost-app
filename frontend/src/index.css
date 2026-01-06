@@ -70,3 +70,57 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.wa-bubble {
+  position: fixed;
+  right: 28px;
+  bottom: 96px;
+  z-index: 9999;
+
+  background: #25d366;
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+
+  font-size: 24px;
+  text-decoration: none;
+
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  transition: all 0.25s ease;
+}
+
+.wa-bubble i {
+  font-size: 26px;
+}
+
+.wa-text {
+  display: none;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+@media (min-width: 1024px) {
+  .wa-bubble {
+    width: auto;
+    height: 56px;
+    padding: 0 20px;
+    border-radius: 999px;
+  }
+
+  .wa-text {
+    display: inline;
+  }
+}
+
+.wa-bubble:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.3);
+}

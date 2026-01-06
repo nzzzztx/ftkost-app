@@ -1,80 +1,88 @@
-/* ===============================
+/* ======================================================
    ROOM SECTION
-================================ */
+====================================================== */
 .room-section {
   position: relative;
   background-color: #ffffff;
-  overflow-x: hidden;
-
-  /* CLEAN UP DIVIDER */
-  border-bottom: none !important;
-  padding-bottom: 0;
   margin-bottom: 80px;
 }
 
-/* HAPUS GARIS DARI PSEUDO ELEMENT (KALAU ADA DARI GLOBAL CSS) */
-#tipe-kamar::after,
-#tipe-kamar::before {
-  display: none !important;
-  content: none !important;
-}
-
-/* ===============================
+/* ======================================================
    HEADER
-================================ */
+====================================================== */
 .room-header {
   max-width: 720px;
-  margin: 0 auto 64px;
+  margin: 0 auto 48px;
   padding: 0 16px;
   text-align: center;
 }
 
-.room-header h2 {
-  font-weight: 700;
-  margin-bottom: 12px;
-}
-
-.room-header p {
-  color: #555;
-  font-size: 0.95rem;
-}
-
-/* ===============================
-   GRID (FALLBACK SAJA)
-================================ */
-.room-grid {
+/* ======================================================
+   CARD LIST (HORIZONTAL SCROLL)
+====================================================== */
+.room-slide {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(320px, 1fr);
   gap: 32px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+
+  padding: 0 24px 24px;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 16px;
+
+  /* 🔥 PAKSA SCROLL AKTIF */
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* ===============================
-   OUTER CAROUSEL
-================================ */
-#roomTypeCarousel .carousel-item {
-  display: flex;
-  justify-content: center;
+/* ======================================================
+   SCROLLBAR – SEMUA DEVICE
+====================================================== */
+
+/* Chrome / Edge / Safari */
+.room-slide::-webkit-scrollbar {
+  height: 8px;
 }
 
-/* ===============================
-   CARD WRAPPER
-================================ */
-.room-card-wrapper {
-  width: 100%;
-  max-width: 420px;
+.room-slide::-webkit-scrollbar-track {
+  background: #fde6d2;
+  border-radius: 8px;
 }
 
-/* ===============================
+.room-slide::-webkit-scrollbar-thumb {
+  background: #fd7e14;
+  border-radius: 8px;
+}
+
+.room-slide::-webkit-scrollbar-thumb:hover {
+  background: #f97316;
+}
+
+/* Firefox */
+.room-slide {
+  scrollbar-color: #fd7e14 #fde6d2;
+  scrollbar-width: thin;
+}
+
+/* ======================================================
    CARD
-================================ */
+====================================================== */
+.room-card-wrapper {
+  scroll-snap-align: start;
+  width: 100%;
+}
+
 .room-card {
+  background: #f7fbff;
   border: 1px solid #dbe6f5;
   border-radius: 18px;
   overflow: hidden;
-  background-color: #f7fbff;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -83,171 +91,135 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 }
 
-/* IMAGE */
+/* ======================================================
+   IMAGE (INNER CAROUSEL ONLY)
+====================================================== */
 .room-card img {
   width: 100%;
-  height: 200px;
+  height: 220px;
   object-fit: cover;
-  display: block;
 }
 
-/* ===============================
+/* ======================================================
    BODY
-================================ */
+====================================================== */
 .room-body {
   padding: 20px;
+  text-align: center;
 }
 
 .room-body h5 {
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
-/* ===============================
-   PRICE
-================================ */
-.room-price {
-  font-size: 1.2rem;
+.room-title {
   font-weight: 700;
-  margin-bottom: 12px;
+  margin-bottom: 4px;
+}
+
+.room-price {
+  font-size: 1.15rem;
+  font-weight: 700;
 }
 
 .room-price span {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  color: #666;
+  color: #6b7280;
 }
 
-/* ===============================
-   TAGS
-================================ */
-.room-tags {
+.room-price-daily {
+  font-size: 0.85rem;
+  color: #374151;
+  margin-bottom: 10px;
+}
+
+/* ======================================================
+   META TAG
+====================================================== */
+.room-meta {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 6px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
-.room-tags span {
-  font-size: 0.75rem;
+.room-meta span {
+  font-size: 0.72rem;
   padding: 4px 8px;
-  background-color: #e9f2fb;
-  border-radius: 6px;
-}
-
-/* ===============================
-   FACILITIES (BADGE MODE)
-================================ */
-.room-facilities {
-  list-style: none;
-  padding: 0;
-  margin: 16px 0;
-}
-
-/* MODE LAMA (TIDAK DIPAKAI, TAPI AMAN) */
-.room-facilities li {
-  font-size: 0.85rem;
-  padding: 6px 0;
-  border-bottom: none;
-}
-
-/* MODE BADGE (AKTIF) */
-.room-facilities.badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
-  padding: 0;
-  list-style: none;
-}
-
-.room-facilities .facility-badge {
-  padding: 6px 12px;
+  background: #eef4ff;
   border-radius: 999px;
-  font-size: 13px;
-  font-weight: 500;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
   color: #1f2937;
 }
 
-.room-facilities .facility-empty {
-  font-size: 13px;
-  color: #9ca3af;
+/* ======================================================
+   FASILITAS (ORANGE CHIP)
+====================================================== */
+.room-facilities {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
 }
 
-/* ===============================
-   NOTES
-================================ */
-.room-note {
-  font-size: 0.8rem;
-  padding: 6px 10px;
-  border-radius: 6px;
-  margin-bottom: 8px;
+.room-facilities .facility-badge {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 999px;
+
+  background: rgba(249, 115, 22, 0.12);
+  color: #f97316;
+  border: 1px solid rgba(249, 115, 22, 0.35);
+
+  white-space: nowrap;
 }
 
-.room-note.success {
-  background-color: #dcfce7;
-  color: #166534;
+.room-facilities .facility-badge.more {
+  background: rgba(249, 115, 22, 0.18);
+  font-weight: 600;
 }
 
-.room-note.danger {
-  background-color: #fee2e2;
-  color: #991b1b;
-}
-
-/* ===============================
+/* ======================================================
    CTA
-================================ */
+====================================================== */
 .room-card .btn {
-  margin-top: 12px;
+  margin-top: 14px;
+  background: #fd7e14;
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 999px;
 }
 
-/* ===============================
+/* ======================================================
    RESPONSIVE
-================================ */
-@media (max-width: 992px) {
-  .room-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-  }
+====================================================== */
 
-  .room-card img {
-    height: 180px;
+/* Desktop: 3 card */
+@media (min-width: 992px) {
+  .room-slide {
+    grid-auto-columns: calc((100% - 64px) / 3);
   }
 }
 
-@media (max-width: 768px) {
-  .room-card-wrapper {
-    max-width: 100%;
-    padding: 0 12px;
+/* Tablet: 2 card */
+@media (max-width: 991px) {
+  .room-slide {
+    grid-auto-columns: calc((100% - 32px) / 2);
   }
 }
 
+/* Mobile: 1 card */
 @media (max-width: 576px) {
-  .room-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-
-  .room-card {
-    max-width: 420px;
-    margin: 0 auto;
+  .room-slide {
+    grid-auto-columns: 100%;
+    padding: 0 16px 24px;
   }
 
   .room-card img {
-    height: 200px;
-  }
-
-  .room-body {
-    padding: 18px;
-  }
-
-  .room-price {
-    font-size: 1.1rem;
-  }
-
-  .room-tags span {
-    font-size: 0.7rem;
+    height: 260px;
   }
 }
