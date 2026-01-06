@@ -1,7 +1,22 @@
+/* ===============================
+   ROOM SECTION
+================================ */
 .room-section {
   position: relative;
   background-color: #ffffff;
   overflow-x: hidden;
+
+  /* CLEAN UP DIVIDER */
+  border-bottom: none !important;
+  padding-bottom: 0;
+  margin-bottom: 80px;
+}
+
+/* HAPUS GARIS DARI PSEUDO ELEMENT (KALAU ADA DARI GLOBAL CSS) */
+#tipe-kamar::after,
+#tipe-kamar::before {
+  display: none !important;
+  content: none !important;
 }
 
 /* ===============================
@@ -25,7 +40,7 @@
 }
 
 /* ===============================
-   GRID
+   GRID (FALLBACK SAJA)
 ================================ */
 .room-grid {
   display: grid;
@@ -34,6 +49,22 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 16px;
+}
+
+/* ===============================
+   OUTER CAROUSEL
+================================ */
+#roomTypeCarousel .carousel-item {
+  display: flex;
+  justify-content: center;
+}
+
+/* ===============================
+   CARD WRAPPER
+================================ */
+.room-card-wrapper {
+  width: 100%;
+  max-width: 420px;
 }
 
 /* ===============================
@@ -60,7 +91,9 @@
   display: block;
 }
 
-/* BODY */
+/* ===============================
+   BODY
+================================ */
 .room-body {
   padding: 20px;
 }
@@ -70,7 +103,9 @@
   margin-bottom: 10px;
 }
 
-/* PRICE */
+/* ===============================
+   PRICE
+================================ */
 .room-price {
   font-size: 1.2rem;
   font-weight: 700;
@@ -83,7 +118,9 @@
   color: #666;
 }
 
-/* TAGS */
+/* ===============================
+   TAGS
+================================ */
 .room-tags {
   display: flex;
   flex-wrap: wrap;
@@ -98,24 +135,50 @@
   border-radius: 6px;
 }
 
-/* FACILITIES */
+/* ===============================
+   FACILITIES (BADGE MODE)
+================================ */
 .room-facilities {
   list-style: none;
   padding: 0;
   margin: 16px 0;
 }
 
+/* MODE LAMA (TIDAK DIPAKAI, TAPI AMAN) */
 .room-facilities li {
   font-size: 0.85rem;
   padding: 6px 0;
-  border-bottom: 1px dashed #e5e7eb;
-}
-
-.room-facilities li:last-child {
   border-bottom: none;
 }
 
-/* NOTES */
+/* MODE BADGE (AKTIF) */
+.room-facilities.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 0;
+  list-style: none;
+}
+
+.room-facilities .facility-badge {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #1f2937;
+}
+
+.room-facilities .facility-empty {
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+/* ===============================
+   NOTES
+================================ */
 .room-note {
   font-size: 0.8rem;
   padding: 6px 10px;
@@ -133,7 +196,9 @@
   color: #991b1b;
 }
 
-/* CTA */
+/* ===============================
+   CTA
+================================ */
 .room-card .btn {
   margin-top: 12px;
 }
@@ -149,6 +214,13 @@
 
   .room-card img {
     height: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .room-card-wrapper {
+    max-width: 100%;
+    padding: 0 12px;
   }
 }
 

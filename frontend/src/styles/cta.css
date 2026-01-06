@@ -1,0 +1,201 @@
+/* ===============================
+   CTA ORANGE SECTION - FIXED
+================================ */
+.cta-orange {
+  position: relative;
+  width: 100%; 
+  padding: 60px 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* BACKGROUND IMAGE */
+.cta-bg {
+  position: absolute;
+  inset: 0;
+  background: url("/images/footer.jpg") center / cover no-repeat;
+  z-index: 0;
+}
+
+/* ORANGE OVERLAY */
+.cta-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(249, 115, 22, 0.85); /* Sedikit lebih gelap agar teks putih lebih kontras */
+}
+
+.cta-container {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  text-align: center;
+  gap: 32px;
+  color: #ffffff;
+}
+
+/* Logo Styling */
+.cta-logo {
+  width: 140px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 12px;
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  margin-bottom: 8px;
+}
+
+/* Typography */
+.cta-center h2 {
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.cta-center p {
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 600px; /* Agar teks tidak terlalu lebar di layar besar */
+  margin: 0 auto 24px auto;
+  opacity: 0.9;
+}
+
+/* Button */
+.cta-btn {
+  display: inline-block;
+  padding: 14px 32px;
+  background: #ffffff;
+  color: #f97316;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.cta-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Alamat & Map Section */
+.cta-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.cta-right h4 {
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.cta-right p {
+  font-size: 14px;
+  max-width: 300px;
+  margin-bottom: 20px;
+}
+
+.cta-map-container {
+  width: 100%;
+  max-width: 350px; 
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  margin-bottom: 12px;
+}
+
+.cta-map {
+  width: 100%;
+  display: block;
+}
+
+.cta-map-link {
+  font-size: 14px;
+  color: #ffffff;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid #fff;
+}
+
+/* SOCIAL SECTION - UPDATED */
+.cta-social {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Jarak antar baris sosial */
+  margin-top: 20px;
+  align-items: center; /* Memastikan semua icon & teks di tengah (mobile) */
+}
+
+.cta-social a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #ffffff;
+  font-size: 14px;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.cta-social a:hover {
+  opacity: 0.8;
+}
+
+/* Membuat Icon Putih dan Rapih */
+.cta-social i {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+
+  /* Background transparan dengan border putih tipis */
+  background: rgba(255, 255, 255, 0.15); 
+  color: #ffffff; /* Warna icon jadi putih */
+  border: 1.5px solid #ffffff; /* Garis lingkar putih */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+/* Desktop Version (Jika layar lebar, tampilkan menyamping) */
+@media (min-width: 1024px) {
+  .cta-container {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+    align-items: flex-start;
+  }
+  
+  .cta-center {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .cta-center p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-right {
+    align-items: flex-end;
+    text-align: right;
+    width: auto;
+  }
+}
