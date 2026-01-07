@@ -25,20 +25,20 @@ export default function Hero() {
 
                     {/* DESCRIPTION */}
                     <p className="hero__desc">
-                        XML Kos hadir buat kamu yang lagi cari tempat tinggal nyaman,
-                        bersih, dan strategis di Cilacap Pusat. Mulai dari kamar yang rapi,
-                        fasilitas lengkap, sampai akses dekat ke berbagai pusat aktivitas.
+                        XML Kos hadir buat kamu yang lagi cari tempat tinggal nyaman, bersih,
+                        dan strategis di Cilacap Pusat. Mulai dari kamar yang rapi, fasilitas lengkap,
+                        sampai akses dekat ke berbagai pusat aktivitas.
                     </p>
 
                     {/* CTA */}
-                    <a
+                    {/* <a
                         href="https://wa.me/6281234567890"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="btn btn-primary btn-pill hero__cta"
                     >
                         Chat Pemilik Kos
-                    </a>
+                    </a> */}
 
                     {/* GALLERY - CAROUSEL (2 SLIDES) */}
                     <div className="hero__gallery">

@@ -1,0 +1,12 @@
+.rental-form-card {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.room-info {
+  font-size: 0.9rem;
+}

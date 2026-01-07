@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from "react-router-dom";
 
 export default function RoomType({ kosList = [], loading = false }) {
     const [isMobile, setIsMobile] = useState(false);
@@ -157,12 +158,19 @@ export default function RoomType({ kosList = [], loading = false }) {
                                                 )}
 
                                                 {/* CTA */}
-                                                <a
+                                                {/* <a
                                                     href={`https://wa.me/?text=Halo, saya tertarik dengan kamar ${room.nama}`}
                                                     className="btn btn-warning w-100 fw-bold mt-3"
                                                 >
                                                     Chat Pemilik Kos
-                                                </a>
+                                                </a> */}
+
+                                                <Link
+                                                    to={`/sewa/${room.id}`}
+                                                    className="btn btn-warning w-100 fw-bold mt-3"
+                                                >
+                                                    Sewa Sekarang
+                                                </Link>
                                             </div>
 
 

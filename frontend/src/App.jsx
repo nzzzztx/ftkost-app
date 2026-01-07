@@ -1,17 +1,15 @@
-import "./App.css";
-
+import { Routes, Route } from "react-router-dom";
 import UserLayout from "./layouts/UserLayout";
 import LandingPage from "./pages/LandingPage";
+import RentalRequestPage from "./pages/RentalRequestPage";
 
-/**
- * Root App Component
- * Layout: UserLayout
- * Page  : LandingPage
- */
 export default function App() {
   return (
-    <UserLayout>
-      <LandingPage />
-    </UserLayout>
+    <Routes>
+      <Route element={<UserLayout />}>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/sewa/:roomId" element={<RentalRequestPage />} />
+      </Route>
+    </Routes>
   );
 }
