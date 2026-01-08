@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 export default function RentalRequestForm({ room }) {
     const [form, setForm] = useState({
         room_id: "",
-        tipe_sewa: "bulanan", // default
+        tipe_sewa: "bulanan",
         nama_penyewa: "",
+        email: "",
         no_wa: "",
         alamat: "",
         catatan: "",
@@ -12,10 +13,8 @@ export default function RentalRequestForm({ room }) {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(false);
 
-    /* ===============================
-       SET ROOM ID SAAT DATA ADA
-    =============================== */
     useEffect(() => {
         if (room?.id) {
             setForm((prev) => ({
@@ -34,54 +33,13 @@ export default function RentalRequestForm({ room }) {
     };
 
     /* ===============================
-       BUILD WHATSAPP MESSAGE
-    =============================== */
-    const buildWaMessage = () => {
-        const harga =
-            form.tipe_sewa === "bulanan"
-                ? `Rp ${room.harga_bulanan.toLocaleString("id-ID")} / bulan`
-                : `Rp ${room.harga_harian.toLocaleString("id-ID")} / hari`;
-
-        return `
-Halo Customer Service XML Kos 👋
-
-Saya ingin mengajukan permintaan sewa:
-
-🏠 Rumah Kos
-${room.kos.nama}
-
-🛏️ Kamar
-${room.nama}
-
-📅 Tipe Sewa
-${form.tipe_sewa.toUpperCase()}
-
-💰 Harga
-${harga}
-
-👤 Nama
-${form.nama_penyewa}
-
-📱 WhatsApp
-${form.no_wa}
-
-📍 Alamat
-${form.alamat}
-
-📝 Catatan
-${form.catatan || "-"}
-
-Terima kasih 🙏
-`.trim();
-    };
-
-    /* ===============================
-       SUBMIT FORM
+       SUBMIT FORM (NO WHATSAPP)
     =============================== */
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         setError(null);
+        setSuccess(false);
 
         try {
             const res = await fetch("http://127.0.0.1:8000/api/rental-requests", {
@@ -103,17 +61,14 @@ Terima kasih 🙏
                 throw new Error(firstError);
             }
 
-            // 📩 OPEN WHATSAPP (CS DEFAULT)
-            const waNumber = "6282325308886";
-            const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(
-                buildWaMessage()
-            )}`;
-            window.open(waUrl, "_blank");
+            // ✅ SUCCESS MESSAGE
+            setSuccess(true);
 
             // reset input (room & tipe tetap)
             setForm((prev) => ({
                 ...prev,
                 nama_penyewa: "",
+                email: "",
                 no_wa: "",
                 alamat: "",
                 catatan: "",
@@ -134,10 +89,18 @@ Terima kasih 🙏
             {/* INFO KAMAR */}
             <div className="room-info mb-4">
                 <strong>{room.nama}</strong>
-                <div className="text-muted">
-                    {room.kos.nama}
-                </div>
+                <div className="text-muted">{room.kos.nama}</div>
             </div>
+
+            {/* PESAN SUKSES */}
+            {success && (
+                <div className="alert alert-success">
+                    <strong>Terima kasih 🙏</strong>
+                    <div>
+                        Terima kasih sudah mengisi form, ditunggu konfirmasi selanjutnya.
+                    </div>
+                </div>
+            )}
 
             <form onSubmit={handleSubmit}>
                 <input type="hidden" name="room_id" value={form.room_id} />
@@ -177,7 +140,6 @@ Terima kasih 🙏
                     </div>
                 </div>
 
-
                 {/* INPUT */}
                 <div className="mb-3">
                     <label className="form-label">Nama Lengkap</label>
@@ -186,6 +148,18 @@ Terima kasih 🙏
                         name="nama_penyewa"
                         className="form-control"
                         value={form.nama_penyewa}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+
+                <div className="mb-3">
+                    <label className="form-label">Email</label>
+                    <input
+                        type="email"
+                        name="email"
+                        className="form-control"
+                        value={form.email}
                         onChange={handleChange}
                         required
                     />

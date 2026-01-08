@@ -47,24 +47,6 @@ export default function RoomType({ kosList = [], loading = false }) {
 
                 {!loading && allRooms.length > 0 && (
                     <>
-                        {/* 🔥 OUTER BUTTON – MANUAL
-                        <button
-                            type="button"
-                            className="room-outer-btn room-outer-btn--left"
-                            onClick={() => scroll('prev')}
-                        >
-                            ‹
-                        </button>
-
-                        <button
-                            type="button"
-                            className="room-outer-btn room-outer-btn--left"
-                            onClick={() => scroll('prev')}
-                        >
-                            ‹
-                        </button> */}
-
-                        {/* 🔥 GANTI FUNGSI: BUKAN BOOTSTRAP CAROUSEL */}
                         <div
                             id="roomTypeCarousel"
                             className="room-scroll-wrapper"

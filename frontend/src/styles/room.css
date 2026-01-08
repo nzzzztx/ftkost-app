@@ -121,6 +121,7 @@
 .room-price {
   font-size: 1.15rem;
   font-weight: 700;
+  color: #f97316;
 }
 
 .room-price span {
@@ -222,4 +223,13 @@
   .room-card img {
     height: 260px;
   }
+}
+
+.text-warning {
+  color: #f97316 !important;
+}
+
+/* Paksa semua h2 section jadi bold */
+section h2 {
+  font-weight: 700;
 }

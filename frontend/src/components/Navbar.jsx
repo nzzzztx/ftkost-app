@@ -67,12 +67,6 @@ export default function Navbar() {
                         </li>
 
                         <li className="nav-item">
-                            <a className="nav-link" href={navLink("#galeri")}>
-                                Galeri
-                            </a>
-                        </li>
-
-                        <li className="nav-item">
                             <a className="nav-link" href={navLink("#faq")}>
                                 FAQ
                             </a>

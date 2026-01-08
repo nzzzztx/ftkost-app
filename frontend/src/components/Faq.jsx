@@ -4,11 +4,11 @@ import "../styles/faq.css";
 const faqs = [
     {
         q: "Bagaimana cara mendaftar atau reservasi kamar di XML Kos?",
-        a: "Kamu bisa langsung menghubungi pemilik kos melalui tombol Chat Pemilik Kos atau WhatsApp yang tersedia."
+        a: "Kamu bisa langsung menghubungi Customer Service melalui tombol WhatsApp yang tersedia."
     },
     {
         q: "Berapa lama minimal durasi sewa kamar di XML Kos?",
-        a: "Minimal durasi sewa adalah 1 bulan."
+        a: "Minimal durasi sewa adalah bisa perhari dan 1 bulan."
     },
     {
         q: "Bagaimana aturan kunjungan tamu di XML Kos?",
@@ -36,7 +36,6 @@ export default function Faq() {
             <div className="faq__container">
                 <div className="faq__image">
                     <img src="/images/faq.jpg" alt="FAQ Kos" />
-                    <button className="faq__play">▶</button>
                 </div>
 
                 <div className="faq__content">

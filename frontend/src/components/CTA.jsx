@@ -55,11 +55,10 @@ export default function CTA() {
                     </p>
 
                     <a
-                        href="https://wa.me/628xxxxxxxxxx"
-                        target="_blank"
+                        href="#tipe-kamar"
                         className="cta-btn"
                     >
-                        Chat Pemilik Kos
+                        Sewa Sekarang
                     </a>
                 </div>
 
