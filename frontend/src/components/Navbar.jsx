@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 
-export default function Navbar() {
+export default function Navbar({ kos = null }) {
     const location = useLocation();
     const isRentalPage = location.pathname.startsWith("/sewa");
 
@@ -13,6 +13,14 @@ export default function Navbar() {
         return isRentalPage ? `/${hash}` : hash;
     };
 
+    // ===============================
+    // DATA KOS (AMAN)
+    // ===============================
+    const kosName = kos?.nama ?? "XML Kos";
+    const kosLogo = kos?.logo
+        ? `/storage/${kos.logo}`
+        : "/logo/logo.svg";
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white fixed-top navbar-main">
             <div className="container-fluid px-5">
@@ -22,13 +30,15 @@ export default function Navbar() {
                     className="navbar-brand d-flex align-items-center gap-2"
                 >
                     <img
-                        src="/logo/logo.svg"
-                        alt="XML Kos"
+                        src={kosLogo}
+                        alt={kosName}
                         className="navbar-logo"
                     />
                     <span className="navbar-brand-text">
-                        <span className="brand-main">XML</span>
-                        <span className="brand-sub">Kos</span>
+                        {/* NAMA KOS */}
+                        <span className="brand-main">
+                            {kosName}
+                        </span>
                     </span>
                 </Link>
 

@@ -1,45 +1,51 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-import Hero from '../components/Hero';
-import Location from '../components/Location';
-import RoomType from '../components/RoomType';
-import Testimoni from '../components/Testimoni';
-import Faq from '../components/faq';
-import CTA from '../components/CTA';
+import Hero from "../components/Hero";
+import Location from "../components/Location";
+import RoomType from "../components/RoomType";
+import Testimoni from "../components/Testimoni";
+import Faq from "../components/Faq";
+import CTA from "../components/CTA";
 
-import { getKosList } from '../services/kosService';
+import { getKosBySlug } from "../services/kosService";
+import { KosProvider } from "../contexts/KosContext";
 
 export default function LandingPage() {
-    const [kosList, setKosList] = useState([]);
+    const { slug } = useParams();
+    const [kos, setKos] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        console.log("FETCH KOS START");
+        let mounted = true;
 
-        getKosList()
-            .then((data) => {
-                console.log("FETCH KOS RESULT:", data);
-                setKosList(data);
-            })
-            .catch((error) => {
-                console.error("FETCH KOS ERROR:", error);
-            })
-            .finally(() => {
-                console.log("FETCH KOS END");
-                setLoading(false);
-            });
-    }, []);
+        const fetchKos = async () => {
+            try {
+                const res = await getKosBySlug(slug);
+                if (mounted) {
+                    setKos(res.data ?? res);
+                }
+            } catch (err) {
+                console.error(err);
+            } finally {
+                if (mounted) setLoading(false);
+            }
+        };
+
+        fetchKos();
+        return () => (mounted = false);
+    }, [slug]);
+
+    if (loading || !kos) return null;
 
     return (
-        <>
-            <Hero />
-            <Location />
-
-            <RoomType kosList={kosList} loading={loading} />
-
+        <KosProvider kos={kos}>
+            <Hero kos={kos} />
+            <Location kos={kos} />
+            <RoomType kosList={kos.rooms ?? []} />
             <Testimoni />
             <Faq />
-            <CTA />
-        </>
+            <CTA kos={kos} />
+        </KosProvider>
     );
 }

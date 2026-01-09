@@ -1,4 +1,52 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { getKosBySlug } from "../services/kosService";
+
 export default function Hero() {
+    const { slug } = useParams();
+
+    const [kos, setKos] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const fetchKos = async () => {
+            try {
+                const res = await getKosBySlug(slug);
+                const data = res?.data ?? res; // aman axios / fetch
+
+                if (isMounted) {
+                    setKos(data);
+                }
+            } catch (error) {
+                console.error("FETCH KOS ERROR:", error);
+            } finally {
+                if (isMounted) {
+                    setLoading(false);
+                }
+            }
+        };
+
+        fetchKos();
+        return () => {
+            isMounted = false;
+        };
+    }, [slug]);
+
+    if (loading || !kos) return null;
+
+    /* ===============================
+     | AMBIL FOTO KAMAR (UNTUK HERO)
+     =============================== */
+    const roomPhotos =
+        kos.rooms?.flatMap((room) => room.photos ?? []) ?? [];
+
+    const heroImage =
+        roomPhotos[0]?.url ||
+        roomPhotos[0]?.path && `/storage/${roomPhotos[0].path}` ||
+        "/images/hero.jpg";
+
     return (
         <section id="beranda" className="hero">
             {/* BACKGROUND STRIP */}
@@ -9,38 +57,29 @@ export default function Hero() {
                 <div className="hero__left">
                     <img
                         className="hero__image"
-                        src="/images/hero.jpg"
-                        alt="Foto Kos"
+                        src={heroImage}
+                        alt={kos.nama}
                         loading="lazy"
                     />
                 </div>
 
                 {/* RIGHT - CONTENT */}
                 <div className="hero__right">
-                    {/* TITLE */}
                     <h1 className="hero__title">
-                        <span className="hero__titleBlue">XML</span>{" "}
-                        <span className="hero__titleOrange">KOS</span>
+                        <span className="hero__titleBlue">
+                            {kos.nama.split(" ").slice(0, 2).join(" ")}
+                        </span>{" "}
+                        <span className="hero__titleOrange">
+                            {kos.nama.split(" ").slice(2).join(" ")}
+                        </span>
                     </h1>
 
                     {/* DESCRIPTION */}
                     <p className="hero__desc">
-                        XML Kos hadir buat kamu yang lagi cari tempat tinggal nyaman, bersih,
-                        dan strategis di Cilacap Pusat. Mulai dari kamar yang rapi, fasilitas lengkap,
-                        sampai akses dekat ke berbagai pusat aktivitas.
+                        {kos.deskripsi}
                     </p>
 
-                    {/* CTA */}
-                    {/* <a
-                        href="https://wa.me/6281234567890"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn btn-primary btn-pill hero__cta"
-                    >
-                        Chat Pemilik Kos
-                    </a> */}
-
-                    {/* GALLERY - CAROUSEL (2 SLIDES) */}
+                    {/* GALLERY – DARI FOTO KAMAR */}
                     <div className="hero__gallery">
                         <div
                             id="heroGallery"
@@ -48,60 +87,26 @@ export default function Hero() {
                             data-bs-ride="carousel"
                             data-bs-interval="5000"
                         >
-                            {/* DOTS */}
-                            <div className="carousel-indicators hero__dots">
-                                <button
-                                    type="button"
-                                    data-bs-target="#heroGallery"
-                                    data-bs-slide-to="0"
-                                    className="active"
-                                />
-                                <button
-                                    type="button"
-                                    data-bs-target="#heroGallery"
-                                    data-bs-slide-to="1"
-                                />
-                            </div>
-
-                            {/* SLIDES */}
                             <div className="carousel-inner">
                                 <div className="carousel-item active">
                                     <div className="hero__thumbRow">
-                                        <img src="/images/room1.jpg" alt="Kamar 1" className="hero__thumb" />
-                                        <img src="/images/room2.jpg" alt="Kamar 2" className="hero__thumb" />
-                                    </div>
-                                </div>
-
-                                <div className="carousel-item">
-                                    <div className="hero__thumbRow">
-                                        <img src="/images/room3.jpg" alt="Kamar 3" className="hero__thumb" />
-                                        <img src="/images/room4.jpg" alt="Kamar 4" className="hero__thumb" />
+                                        {roomPhotos.slice(0, 2).map((photo, i) => (
+                                            <img
+                                                key={i}
+                                                src={
+                                                    photo.url ??
+                                                    `/storage/${photo.path}`
+                                                }
+                                                alt={`Foto Kamar ${i + 1}`}
+                                                className="hero__thumb"
+                                            />
+                                        ))}
                                     </div>
                                 </div>
                             </div>
-
-                            {/* ARROWS */}
-                            <button
-                                className="carousel-control-prev hero__arrow hero__arrow--left"
-                                type="button"
-                                data-bs-target="#heroGallery"
-                                data-bs-slide="prev"
-                            >
-                                <span className="carousel-control-prev-icon" />
-                            </button>
-
-                            <button
-                                className="carousel-control-next hero__arrow hero__arrow--right"
-                                type="button"
-                                data-bs-target="#heroGallery"
-                                data-bs-slide="next"
-                            >
-                                <span className="carousel-control-next-icon" />
-                            </button>
                         </div>
                     </div>
 
-                    {/* FACILITIES */}
                     <div className="hero__facilities">
                         <div className="hero__facTitle">FASILITAS BERSAMA</div>
 
@@ -110,7 +115,7 @@ export default function Hero() {
                                 <span className="hero__facIcon">
                                     <img src="/icons/wifi.svg" alt="Wifi" />
                                 </span>
-                                Wifi kecepatan 1000Mbps
+                                Wifi
                             </div>
 
                             <div className="hero__facItem">
@@ -129,13 +134,6 @@ export default function Hero() {
 
                             <div className="hero__facItem">
                                 <span className="hero__facIcon">
-                                    <img src="/icons/cleaning.svg" alt="Cleaning" />
-                                </span>
-                                Cleaning service
-                            </div>
-
-                            <div className="hero__facItem">
-                                <span className="hero__facIcon">
                                     <img src="/icons/bike.svg" alt="Parkir Motor" />
                                 </span>
                                 Parkir motor
@@ -146,6 +144,13 @@ export default function Hero() {
                                     <img src="/icons/laundry.svg" alt="Laundry" />
                                 </span>
                                 Laundry
+                            </div>
+
+                            <div className="hero__facItem">
+                                <span className="hero__facIcon">
+                                    <img src="/icons/cleaning.svg" alt="Cleaning" />
+                                </span>
+                                Cleaning Service
                             </div>
                         </div>
                     </div>

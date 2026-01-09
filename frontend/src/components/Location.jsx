@@ -1,9 +1,13 @@
-export default function Location() {
+export default function Location({ kos }) {
+    const address = kos?.alamat ?? "";
+
+    const mapSrc = address
+        ? `https://www.google.com/maps?q=${encodeURIComponent(address)}&z=16&output=embed`
+        : "https://www.google.com/maps?q=Indonesia&z=5&output=embed";
+
     return (
         <section id="lokasi" className="location-section">
             <div className="container">
-
-                {/* HEADER */}
                 <div className="location-header">
                     <h2 className="location-title">
                         <span className="location-title-blue">LOKASI</span>{" "}
@@ -15,17 +19,15 @@ export default function Location() {
                     </p>
                 </div>
 
-                {/* MAP */}
                 <div className="location-map-full">
                     <iframe
                         title="Lokasi Kos"
-                        src="https://www.google.com/maps?q=Jl.+Rinjani+No.172+Cilacap&z=16&output=embed"
+                        src={mapSrc}
                         loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade"
                     />
                     <div className="location-address">
-                        Jl. Rinjani No.172, Rawagaru, Sidanegara, Kec. Cilacap Tengah,
-                        Kabupaten Cilacap, Jawa Tengah 53263
+                        {address || "Alamat belum tersedia"}
                     </div>
                 </div>
 

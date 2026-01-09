@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 export default function RentalRequestForm({ room }) {
     const [form, setForm] = useState({
         room_id: "",
+        kos_slug: "", // ⬅️ TAMBAHAN (AMAN)
         tipe_sewa: "bulanan",
         nama_penyewa: "",
         email: "",
@@ -15,11 +16,15 @@ export default function RentalRequestForm({ room }) {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
 
+    /* ===============================
+       INIT ROOM DATA
+    =============================== */
     useEffect(() => {
         if (room?.id) {
             setForm((prev) => ({
                 ...prev,
                 room_id: room.id,
+                kos_slug: room.kos?.slug ?? "", // ⬅️ INI INTINYA
             }));
         }
     }, [room]);
@@ -33,7 +38,7 @@ export default function RentalRequestForm({ room }) {
     };
 
     /* ===============================
-       SUBMIT FORM (NO WHATSAPP)
+       SUBMIT FORM
     =============================== */
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -61,7 +66,6 @@ export default function RentalRequestForm({ room }) {
                 throw new Error(firstError);
             }
 
-            // ✅ SUCCESS MESSAGE
             setSuccess(true);
 
             // reset input (room & tipe tetap)
@@ -89,7 +93,7 @@ export default function RentalRequestForm({ room }) {
             {/* INFO KAMAR */}
             <div className="room-info mb-4">
                 <strong>{room.nama}</strong>
-                <div className="text-muted">{room.kos.nama}</div>
+                <div className="text-muted">{room.kos?.nama}</div>
             </div>
 
             {/* PESAN SUKSES */}
@@ -103,7 +107,9 @@ export default function RentalRequestForm({ room }) {
             )}
 
             <form onSubmit={handleSubmit}>
+                {/* HIDDEN */}
                 <input type="hidden" name="room_id" value={form.room_id} />
+                <input type="hidden" name="kos_slug" value={form.kos_slug} />
 
                 {/* PILIH TIPE SEWA */}
                 <div className="mb-3">

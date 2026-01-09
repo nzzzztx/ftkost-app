@@ -1,31 +1,30 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 export default function RoomType({ kosList = [], loading = false }) {
     const [isMobile, setIsMobile] = useState(false);
-    const scrollRef = useRef(null); // 🔥 tambahan
+    const scrollRef = useRef(null);
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth < 768);
         handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
     }, []);
 
     const allRooms = kosList.flatMap((kos) =>
         (kos.rooms || []).map((room) => ({
             ...room,
-            kos,
+            kos, // ⬅️ tetap, ini penting buat slug
         }))
     );
 
-    // 🔥 TIDAK PAKAI carousel slide logic lagi
     const scroll = (direction) => {
         if (!scrollRef.current) return;
         const amount = isMobile ? 360 : 420;
         scrollRef.current.scrollBy({
-            left: direction === 'next' ? amount : -amount,
-            behavior: 'smooth',
+            left: direction === "next" ? amount : -amount,
+            behavior: "smooth",
         });
     };
 
@@ -36,7 +35,7 @@ export default function RoomType({ kosList = [], loading = false }) {
                 {/* HEADER */}
                 <div className="room-header text-center">
                     <h2>
-                        <span className="text-primary">TIPE</span>{' '}
+                        <span className="text-primary">TIPE</span>{" "}
                         <span className="text-warning">KAMAR</span>
                     </h2>
                     <p>
@@ -53,11 +52,11 @@ export default function RoomType({ kosList = [], loading = false }) {
                             ref={scrollRef}
                         >
                             <div className="room-slide">
-                                {allRooms.map(room => (
+                                {allRooms.map((room) => (
                                     <div key={room.id} className="room-card-wrapper">
                                         <div className="room-card">
 
-                                            {/* INNER CAROUSEL FOTO – TETAP */}
+                                            {/* INNER CAROUSEL FOTO */}
                                             <div
                                                 id={`inner-carousel-${room.id}`}
                                                 className="carousel slide room-carousel"
@@ -68,7 +67,7 @@ export default function RoomType({ kosList = [], loading = false }) {
                                                         room.photos.map((photo, i) => (
                                                             <div
                                                                 key={i}
-                                                                className={`carousel-item ${i === 0 ? 'active' : ''}`}
+                                                                className={`carousel-item ${i === 0 ? "active" : ""}`}
                                                             >
                                                                 <img src={photo.url} alt={room.nama} />
                                                             </div>
@@ -98,21 +97,30 @@ export default function RoomType({ kosList = [], loading = false }) {
                                                 {/* Nama Kamar */}
                                                 <h5 className="room-title">{room.nama}</h5>
 
-                                                {/* Nama Rumah Kos */}
+                                                {/* Nama Rumah Kos (klik ke landing kos pakai slug) */}
                                                 <div className="room-kos-name">
-                                                    {room.kos?.nama ?? 'Rumah Kos'}
+                                                    {room.kos?.slug ? (
+                                                        <Link
+                                                            to={`/kos/${room.kos.slug}`}
+                                                            className="text-decoration-none"
+                                                        >
+                                                            {room.kos.nama}
+                                                        </Link>
+                                                    ) : (
+                                                        "Rumah Kos"
+                                                    )}
                                                 </div>
 
                                                 {/* Harga */}
                                                 <div className="room-price">
-                                                    Rp {room.harga_bulanan?.toLocaleString('id-ID')}
+                                                    Rp {room.harga_bulanan?.toLocaleString("id-ID")}
                                                     <span> / bulan</span>
                                                 </div>
 
-                                                {/* Harga Harian (opsional) */}
+                                                {/* Harga Harian */}
                                                 {room.harga_harian && (
                                                     <div className="room-price-daily">
-                                                        Rp {room.harga_harian.toLocaleString('id-ID')} / hari
+                                                        Rp {room.harga_harian.toLocaleString("id-ID")} / hari
                                                     </div>
                                                 )}
 
@@ -123,8 +131,8 @@ export default function RoomType({ kosList = [], loading = false }) {
                                                     <span>Kapasitas {room.kapasitas}</span>
                                                 </div>
 
-                                                {/* Fasilitas (dibatasi max 6 biar rapi) */}
-                                                {room.facilities && room.facilities.length > 0 && (
+                                                {/* Fasilitas */}
+                                                {room.facilities?.length > 0 && (
                                                     <ul className="room-facilities badges">
                                                         {room.facilities.slice(0, 8).map((f) => (
                                                             <li key={f.id} className="facility-badge">
@@ -140,21 +148,13 @@ export default function RoomType({ kosList = [], loading = false }) {
                                                 )}
 
                                                 {/* CTA */}
-                                                {/* <a
-                                                    href={`https://wa.me/?text=Halo, saya tertarik dengan kamar ${room.nama}`}
-                                                    className="btn btn-warning w-100 fw-bold mt-3"
-                                                >
-                                                    Chat Pemilik Kos
-                                                </a> */}
-
                                                 <Link
-                                                    to={`/sewa/${room.id}`}
+                                                    to={`/sewa/${room.id}?kos=${room.kos?.slug}`}
                                                     className="btn btn-warning w-100 fw-bold mt-3"
                                                 >
                                                     Sewa Sekarang
                                                 </Link>
                                             </div>
-
 
                                         </div>
                                     </div>

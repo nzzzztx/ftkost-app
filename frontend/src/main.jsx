@@ -14,6 +14,7 @@ import "./styles/cta.css";
 import "./styles/footer.css";
 import "./styles/rental.css";
 
+
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <App />
