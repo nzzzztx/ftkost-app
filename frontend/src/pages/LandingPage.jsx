@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Location from "../components/Location";
 import RoomType from "../components/RoomType";
@@ -33,19 +34,23 @@ export default function LandingPage() {
         };
 
         fetchKos();
-        return () => (mounted = false);
+        return () => {
+            mounted = false;
+        };
     }, [slug]);
 
     if (loading || !kos) return null;
 
     return (
         <KosProvider kos={kos}>
+            <Navbar kos={kos} />
             <Hero kos={kos} />
             <Location kos={kos} />
-            <RoomType kosList={kos.rooms ?? []} />
+            <RoomType kosList={[kos]} loading={loading} />
             <Testimoni />
             <Faq />
             <CTA kos={kos} />
         </KosProvider>
     );
+
 }

@@ -1,58 +1,102 @@
-export default function CTA() {
+export default function CTA({ kos }) {
+    if (!kos) return null;
+
+    const logo = kos.logo_url || "/logo/logo.svg";
+    const BACKEND_URL = "http://127.0.0.1:8000";
+    const ctaTitle =
+        kos.cta_title || `Yuk, Mulai Hidup Nyaman di ${kos.nama}`;
+
+    const description = kos.deskripsi || "";
+
+    const waNumber = kos.contact_whatsapp
+        ? kos.contact_whatsapp.replace(/\D/g, "")
+        : null;
+
+    const waLink = waNumber ? `https://wa.me/${waNumber}` : null;
+
+    const instagram = kos.contact_instagram
+        ? kos.contact_instagram.replace("@", "")
+        : null;
+
+    const email = kos.contact_email || null;
+
+    const addressLine1 = kos.alamat || "";
+
+    const addressLine2 = [
+        kos.kota,
+        kos.provinsi,
+        kos.kode_pos,
+    ].filter(Boolean).join(", ");
+
+    const mapsQuery = encodeURIComponent(
+        [addressLine1, addressLine2].filter(Boolean).join(", ")
+    );
+
+    const mapsEmbed = mapsQuery
+        ? `https://www.google.com/maps?q=${mapsQuery}&output=embed`
+        : null;
+
+    const mapsLink = mapsQuery
+        ? `https://maps.google.com?q=${mapsQuery}`
+        : null;
+
     return (
         <section className="cta-orange">
-            <div className="cta-bg" />
+            <div className="cta-bg"
+                style={{
+                    backgroundImage: kos.photos?.length
+                        ? `url(${BACKEND_URL}/storage/${kos.photos[0]})`
+                        : `url("/images/footer.jpg")`,
+                }} />
 
             <div className="cta-container">
                 <div className="cta-left">
                     <img
-                        src="/logo/logo.svg"
-                        alt="XML Kos"
+                        src={logo}
+                        alt={kos.nama}
                         className="cta-logo"
                     />
 
-                    <p className="cta-desc">
-                        XML Kos adalah hunian nyaman dengan lokasi strategis,
-                        lingkungan aman, dan pengelolaan rapi untuk mendukung
-                        aktivitas harianmu.
-                    </p>
-
                     <div className="cta-social">
-                        <a
-                            href="https://wa.me/62812XXXXXXXX"
-                            target="_blank"
-                            aria-label="WhatsApp"
-                        >
-                            <i className="bi bi-whatsapp"></i>
-                            0812-xxxx-xxxx
-                        </a>
+                        {waLink && (
+                            <a
+                                href={waLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <i className="bi bi-whatsapp" />
+                                {kos.contact_whatsapp}
+                            </a>
+                        )}
 
-                        <a
-                            href="https://instagram.com/xml.kos"
-                            target="_blank"
-                            aria-label="Instagram"
-                        >
-                            <i className="bi bi-instagram"></i>
-                            @xml.kos
-                        </a>
+                        {instagram && (
+                            <a
+                                href={`https://instagram.com/${instagram}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <i className="bi bi-instagram" />
+                                @{instagram}
+                            </a>
+                        )}
 
-                        <a
-                            href="mailto:info@xmlkos.com"
-                            aria-label="Email"
-                        >
-                            <i className="bi bi-envelope"></i>
-                            info@xmlkos.com
-                        </a>
+                        {email && (
+                            <a href={`mailto:${email}`}>
+                                <i className="bi bi-envelope" />
+                                {email}
+                            </a>
+                        )}
                     </div>
                 </div>
 
-
                 <div className="cta-center">
-                    <h2>Yuk, Mulai Hidup Nyaman di XML Kos!</h2>
-                    <p>
-                        Temukan tempat tinggal yang bikin kamu betah setiap hari.
-                        Saatnya pindah ke kos yang benar-benar cocok buat kebutuhanmu.
-                    </p>
+                    <h2>{ctaTitle}</h2>
+
+                    {description && (
+                        <p className="cta-desc">
+                            {description}
+                        </p>
+                    )}
 
                     <a
                         href="#tipe-kamar"
@@ -63,25 +107,29 @@ export default function CTA() {
                 </div>
 
                 <div className="cta-right">
-                    <h4>ALAMAT KANTOR</h4>
-                    <p>
-                        Jl. Rinjani No.172, Rawagaru, Sidareja, Kec. Cilacap Tengah,
-                        Kabupaten Cilacap, Jawa Tengah 53263
-                    </p>
+                    <h4>ALAMAT KOS</h4>
 
-                    <iframe
-                        src="https://www.google.com/maps?q=Jl.%20Rinjani%20No.172%20Cilacap&output=embed"
-                        loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"
-                    ></iframe>
+                    {addressLine1 && <p>{addressLine1}</p>}
+                    {addressLine2 && <p>{addressLine2}</p>}
 
-                    <a
-                        href="https://maps.google.com?q=Jl.+Rinjani+No.172+Cilacap"
-                        target="_blank"
-                        className="cta-map-link"
-                    >
-                        Lihat di Maps →
-                    </a>
+                    {mapsEmbed && (
+                        <iframe
+                            src={mapsEmbed}
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                        />
+                    )}
+
+                    {mapsLink && (
+                        <a
+                            href={mapsLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="cta-map-link"
+                        >
+                            Lihat di Maps →
+                        </a>
+                    )}
                 </div>
 
             </div>

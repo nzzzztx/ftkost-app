@@ -1,5 +1,7 @@
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
+import Navbar from "../components/Navbar";
 import RentalRequestForm from "../components/RentalRequestForm";
 
 export default function RentalRequestPage() {
@@ -51,8 +53,14 @@ export default function RentalRequestPage() {
     }
 
     return (
-        <section className="container py-5">
-            <RentalRequestForm room={room} />
-        </section>
+        <>
+            <Navbar kos={room.kos} />
+
+            <main className="page-wrapper">
+                <section className="container py-5">
+                    <RentalRequestForm room={room} />
+                </section>
+            </main>
+        </>
     );
 }

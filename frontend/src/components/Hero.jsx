@@ -1,115 +1,158 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { getKosBySlug } from "../services/kosService";
 
 export default function Hero() {
     const { slug } = useParams();
+    const BACKEND_URL = "http://127.0.0.1:8000";
 
     const [kos, setKos] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    // FOTO BESAR = FOTO KOS
+    const [activeHero, setActiveHero] = useState("/images/hero.jpg");
+
+    // REF THUMBNAIL
+    const thumbRef = useRef(null);
+    const [canScroll, setCanScroll] = useState(false);
+
+    /* ===============================
+       FETCH DATA KOS
+    =============================== */
     useEffect(() => {
         let isMounted = true;
 
         const fetchKos = async () => {
             try {
                 const res = await getKosBySlug(slug);
-                const data = res?.data ?? res; // aman axios / fetch
-
-                if (isMounted) {
-                    setKos(data);
-                }
-            } catch (error) {
-                console.error("FETCH KOS ERROR:", error);
+                const data = res?.data ?? res;
+                if (isMounted) setKos(data);
+            } catch (err) {
+                console.error("FETCH KOS ERROR:", err);
             } finally {
-                if (isMounted) {
-                    setLoading(false);
-                }
+                if (isMounted) setLoading(false);
             }
         };
 
         fetchKos();
-        return () => {
-            isMounted = false;
-        };
+        return () => (isMounted = false);
     }, [slug]);
 
-    if (loading || !kos) return null;
+    /* ===============================
+       SET FOTO KOS SEKALI
+    =============================== */
+    useEffect(() => {
+        if (kos?.photos?.length) {
+            setActiveHero(`${BACKEND_URL}/storage/${kos.photos[0]}`);
+        }
+    }, [kos]);
 
     /* ===============================
-     | AMBIL FOTO KAMAR (UNTUK HERO)
-     =============================== */
-    const roomPhotos =
-        kos.rooms?.flatMap((room) => room.photos ?? []) ?? [];
+       FOTO KAMAR (THUMBNAIL)
+    =============================== */
+    const roomPhotos = Array.isArray(kos?.rooms)
+        ? kos.rooms.flatMap((room) =>
+            (room.photos ?? []).map((photo) =>
+                photo.url
+                    ? photo.url
+                    : photo.path
+                        ? `${BACKEND_URL}/storage/${photo.path}`
+                        : null
+            )
+        )
+        : [];
 
-    const heroImage =
-        roomPhotos[0]?.url ||
-        roomPhotos[0]?.path && `/storage/${roomPhotos[0].path}` ||
-        "/images/hero.jpg";
+    /* ===============================
+       CEK SCROLL
+    =============================== */
+    useEffect(() => {
+        if (!thumbRef.current) return;
+        const el = thumbRef.current;
+        setCanScroll(el.scrollWidth > el.clientWidth);
+    }, [roomPhotos]);
+
+    /* ===============================
+       SCROLL HANDLER
+    =============================== */
+    const scrollThumb = (dir) => {
+        if (!thumbRef.current) return;
+        const amount = thumbRef.current.offsetWidth * 0.9;
+        thumbRef.current.scrollBy({
+            left: dir === "next" ? amount : -amount,
+            behavior: "smooth",
+        });
+    };
+
+    // ⬅️ RETURN NULL DITARUH PALING BAWAH (SETELAH SEMUA HOOK)
+    if (loading || !kos) return null;
+
+    const kosName = kos.nama ?? "";
+    const kosNameParts = kosName.split(" ");
 
     return (
         <section id="beranda" className="hero">
-            {/* BACKGROUND STRIP */}
             <div className="hero__strip" />
 
             <div className="hero__container">
-                {/* LEFT - IMAGE */}
+                {/* LEFT */}
                 <div className="hero__left">
                     <img
                         className="hero__image"
-                        src={heroImage}
-                        alt={kos.nama}
+                        src={activeHero}
+                        alt={kosName}
                         loading="lazy"
                     />
                 </div>
 
-                {/* RIGHT - CONTENT */}
+                {/* RIGHT */}
                 <div className="hero__right">
                     <h1 className="hero__title">
                         <span className="hero__titleBlue">
-                            {kos.nama.split(" ").slice(0, 2).join(" ")}
+                            {kosNameParts.slice(0, 2).join(" ")}
                         </span>{" "}
                         <span className="hero__titleOrange">
-                            {kos.nama.split(" ").slice(2).join(" ")}
+                            {kosNameParts.slice(2).join(" ")}
                         </span>
                     </h1>
 
-                    {/* DESCRIPTION */}
-                    <p className="hero__desc">
-                        {kos.deskripsi}
-                    </p>
+                    <p className="hero__desc">{kos.deskripsi}</p>
 
-                    {/* GALLERY – DARI FOTO KAMAR */}
+                    {/* THUMBNAIL */}
                     <div className="hero__gallery">
-                        <div
-                            id="heroGallery"
-                            className="carousel slide"
-                            data-bs-ride="carousel"
-                            data-bs-interval="5000"
+                        <button
+                            className="hero__arrow hero__arrow--left"
+                            onClick={() => scrollThumb("prev")}
+                            disabled={!canScroll}
                         >
-                            <div className="carousel-inner">
-                                <div className="carousel-item active">
-                                    <div className="hero__thumbRow">
-                                        {roomPhotos.slice(0, 2).map((photo, i) => (
-                                            <img
-                                                key={i}
-                                                src={
-                                                    photo.url ??
-                                                    `/storage/${photo.path}`
-                                                }
-                                                alt={`Foto Kamar ${i + 1}`}
-                                                className="hero__thumb"
-                                            />
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
+                            ‹
+                        </button>
+
+                        <div className="hero__thumbRow" ref={thumbRef}>
+                            {roomPhotos
+                                .filter(Boolean)
+                                .map((src, i) => (
+                                    <img
+                                        key={i}
+                                        src={src}
+                                        className="hero__thumb"
+                                        alt={`Foto kamar ${i + 1}`}
+                                        loading="lazy"
+                                    />
+                                ))}
                         </div>
+
+                        <button
+                            className="hero__arrow hero__arrow--right"
+                            onClick={() => scrollThumb("next")}
+                            disabled={!canScroll}
+                        >
+                            ›
+                        </button>
                     </div>
 
+                    {/* FASILITAS (AMAN) */}
                     <div className="hero__facilities">
                         <div className="hero__facTitle">FASILITAS BERSAMA</div>
-
                         <div className="hero__facGrid">
                             <div className="hero__facItem">
                                 <span className="hero__facIcon">
@@ -117,35 +160,30 @@ export default function Hero() {
                                 </span>
                                 Wifi
                             </div>
-
                             <div className="hero__facItem">
                                 <span className="hero__facIcon">
                                     <img src="/icons/kitchen.svg" alt="Dapur" />
                                 </span>
                                 Dapur bersama
                             </div>
-
                             <div className="hero__facItem">
                                 <span className="hero__facIcon">
                                     <img src="/icons/car.svg" alt="Parkir Mobil" />
                                 </span>
                                 Parkir mobil
                             </div>
-
                             <div className="hero__facItem">
                                 <span className="hero__facIcon">
                                     <img src="/icons/bike.svg" alt="Parkir Motor" />
                                 </span>
                                 Parkir motor
                             </div>
-
                             <div className="hero__facItem">
                                 <span className="hero__facIcon">
                                     <img src="/icons/laundry.svg" alt="Laundry" />
                                 </span>
                                 Laundry
                             </div>
-
                             <div className="hero__facItem">
                                 <span className="hero__facIcon">
                                     <img src="/icons/cleaning.svg" alt="Cleaning" />

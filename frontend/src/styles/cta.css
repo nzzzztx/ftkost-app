@@ -1,17 +1,16 @@
 /* ===============================
-   CTA ORANGE SECTION - FIXED
+   CTA ORANGE SECTION - FINAL
 ================================ */
 .cta-orange {
   position: relative;
   width: 100%;
-  padding: 60px 0;
+  padding: 64px 0;
   overflow: hidden;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
-/* BACKGROUND IMAGE */
+/* BACKGROUND */
 .cta-bg {
   position: absolute;
   inset: 0;
@@ -19,7 +18,6 @@
   z-index: 0;
 }
 
-/* ORANGE OVERLAY */
 .cta-bg::after {
   content: "";
   position: absolute;
@@ -27,51 +25,89 @@
   background: rgba(249, 115, 22, 0.85);
 }
 
+/* ===============================
+   CONTAINER
+================================ */
 .cta-container {
   position: relative;
   z-index: 2;
   max-width: 1200px;
   width: 100%;
-  margin: 0 auto;
   padding: 0 24px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  gap: 32px;
+  gap: 40px;
+
   color: #ffffff;
+  text-align: center;
 }
 
-/* Logo Styling */
+/* ===============================
+   LEFT (LOGO + SOCIAL)
+================================ */
+.cta-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .cta-logo {
-  width: 140px;
-  background: rgba(255, 255, 255, 0.2);
+  width: 120px;
   padding: 12px;
   border-radius: 16px;
+  background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  margin-bottom: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  margin-bottom: 16px;
 }
 
-/* Typography */
+/* SOCIAL */
+.cta-social {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.cta-social a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.cta-social i {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===============================
+   CENTER (CTA TEXT)
+================================ */
 .cta-center h2 {
   font-size: 26px;
   font-weight: 800;
+  line-height: 1.25;
   margin-bottom: 16px;
-  line-height: 1.2;
 }
 
 .cta-center p {
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.6;
-  max-width: 600px;
-  margin: 0 auto 24px auto;
-  opacity: 0.9;
+  max-width: 560px;
+  margin: 0 auto 24px;
+  opacity: 0.95;
 }
 
-/* Button */
 .cta-btn {
   display: inline-block;
   padding: 14px 32px;
@@ -80,152 +116,132 @@
   border-radius: 999px;
   font-weight: 700;
   text-decoration: none;
-  transition: transform 0.2s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.cta-btn:hover {
-  transform: translateY(-2px);
-}
-
-/* Alamat & Map Section */
+/* ===============================
+   RIGHT (ADDRESS + MAP)
+================================ */
 .cta-right {
+  width: 100%;
+  max-width: 360px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
 }
 
 .cta-right h4 {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
-  text-transform: uppercase;
   letter-spacing: 1px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .cta-right p {
   font-size: 14px;
-  max-width: 300px;
-  margin-bottom: 20px;
+  line-height: 1.6;
+  margin-bottom: 14px;
+  opacity: 0.95;
 }
 
+/* MAP CONTAINER */
 .cta-map-container {
+  position: relative;
   width: 100%;
-  max-width: 350px;
+  height: 200px;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   margin-bottom: 12px;
 }
 
+/* MAP */
 .cta-map {
   width: 100%;
-  display: block;
+  height: 100%;
+  border: none;
+  position: relative;
+  z-index: 1;
+}
+
+/* 🔥 MASK GOOGLE MAPS TEXT */
+.cta-map-container::after {
+  content: "";
+  position: absolute;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  height: 56px;
+  background: rgba(249, 115, 22, 0.95);
+  z-index: 2;
+  pointer-events: none;
 }
 
 .cta-map-link {
   font-size: 14px;
-  color: #ffffff;
   font-weight: 600;
-  text-decoration: none;
-  border-bottom: 1px solid #fff;
+  color: #fff;
+  text-decoration: underline;
 }
 
-/* SOCIAL SECTION - UPDATED */
-.cta-social {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 20px;
-  align-items: center;
+@media (max-width: 768px) {
+  .cta-map-container,
+  .cta-map-link {
+    display: none;
+  }
+
+  /* RAPAPIKAN ALAMAT */
+  .cta-right {
+    max-width: 100%;
+    margin-top: 8px;
+  }
+
+  .cta-right p {
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: center;
+    margin-bottom: 0;
+  }
+
+  /* JARAK ANTAR SECTION LEBIH ENAK */
+  .cta-container {
+    gap: 32px;
+  }
 }
 
-.cta-social a {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: #ffffff;
-  font-size: 14px;
-  text-decoration: none;
-  transition: opacity 0.2s;
-}
-
-.cta-social a:hover {
-  opacity: 0.8;
-}
-
-.cta-social i {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
-  color: #ffffff;
-  border: 1.5px solid #ffffff;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 16px;
-  flex-shrink: 0;
-}
-
-/* Desktop Version (Jika layar lebar, tampilkan menyamping) */
 @media (min-width: 1024px) {
   .cta-container {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     text-align: left;
-    gap: 64px;
   }
 
-  /* LEFT */
   .cta-left {
-    flex: 1;
-    max-width: 320px;
     align-items: flex-start;
+    max-width: 300px;
   }
 
-  /* CENTER (HERO) */
   .cta-center {
     flex: 1.4;
     text-align: center;
-    margin-top: 0;
   }
 
   .cta-center h2 {
     font-size: 36px;
-    line-height: 1.25;
   }
 
-  .cta-center p {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 420px;
-  }
-
-  /* RIGHT (ADDRESS + MAP) */
   .cta-right {
-    flex: 1;
-    max-width: 340px;
     align-items: flex-end;
     text-align: right;
-    margin-top: 8px;
   }
 
   .cta-right p {
-    margin-left: auto;
+    text-align: right;
   }
 
-  /* MAP */
   .cta-map-container {
-    max-width: 100%;
     height: 220px;
   }
 
-  /* SOCIAL */
   .cta-social {
     align-items: flex-start;
   }

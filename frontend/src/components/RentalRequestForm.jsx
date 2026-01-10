@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 export default function RentalRequestForm({ room }) {
     const [form, setForm] = useState({
         room_id: "",
-        kos_slug: "", // ⬅️ TAMBAHAN (AMAN)
+        kos_slug: "",
         tipe_sewa: "bulanan",
         nama_penyewa: "",
         email: "",
@@ -16,30 +16,23 @@ export default function RentalRequestForm({ room }) {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
 
-    /* ===============================
-       INIT ROOM DATA
-    =============================== */
+
     useEffect(() => {
         if (room?.id) {
             setForm((prev) => ({
                 ...prev,
                 room_id: room.id,
-                kos_slug: room.kos?.slug ?? "", // ⬅️ INI INTINYA
+                kos_slug: room.kos?.slug ?? "",
             }));
         }
     }, [room]);
 
-    /* ===============================
-       HANDLE INPUT CHANGE
-    =============================== */
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
     };
 
-    /* ===============================
-       SUBMIT FORM
-    =============================== */
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -68,7 +61,6 @@ export default function RentalRequestForm({ room }) {
 
             setSuccess(true);
 
-            // reset input (room & tipe tetap)
             setForm((prev) => ({
                 ...prev,
                 nama_penyewa: "",
