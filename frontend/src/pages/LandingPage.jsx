@@ -39,6 +39,19 @@ export default function LandingPage() {
         };
     }, [slug]);
 
+    // 🔥 INI TEMPAT SET WARNA LANDING
+    useEffect(() => {
+        if (!kos) return;
+
+        const root = document.documentElement;
+
+        root.style.setProperty("--primary-color", kos.primary_color);
+        root.style.setProperty("--secondary-color", kos.secondary_color);
+
+        console.log("THEME APPLIED:", kos.primary_color, kos.secondary_color);
+    }, [kos]);
+
+
     if (loading || !kos) return null;
 
     return (
@@ -52,5 +65,4 @@ export default function LandingPage() {
             <CTA kos={kos} />
         </KosProvider>
     );
-
 }

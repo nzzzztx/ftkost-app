@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import api from "../services/api";
 
 export default function RentalRequestForm({ room }) {
     const [form, setForm] = useState({
@@ -16,7 +17,6 @@ export default function RentalRequestForm({ room }) {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
 
-
     useEffect(() => {
         if (room?.id) {
             setForm((prev) => ({
@@ -26,7 +26,6 @@ export default function RentalRequestForm({ room }) {
             }));
         }
     }, [room]);
-
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -40,23 +39,11 @@ export default function RentalRequestForm({ room }) {
         setSuccess(false);
 
         try {
-            const res = await fetch("http://127.0.0.1:8000/api/rental-requests", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                },
-                body: JSON.stringify(form),
-            });
+            const res = await api.post("/rental-requests", form);
+            const data = res.data;
 
-            const data = await res.json();
-
-            if (!res.ok) {
-                const firstError =
-                    data?.message ||
-                    Object.values(data?.errors || {})[0]?.[0] ||
-                    "Gagal mengirim permintaan";
-                throw new Error(firstError);
+            if (!data) {
+                throw new Error("Gagal mengirim permintaan");
             }
 
             setSuccess(true);
@@ -70,7 +57,11 @@ export default function RentalRequestForm({ room }) {
                 catatan: "",
             }));
         } catch (err) {
-            setError(err.message);
+            setError(
+                err?.response?.data?.message ||
+                Object.values(err?.response?.data?.errors || {})[0]?.[0] ||
+                err.message
+            );
         } finally {
             setLoading(false);
         }

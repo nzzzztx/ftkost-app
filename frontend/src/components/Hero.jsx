@@ -4,12 +4,11 @@ import { getKosBySlug } from "../services/kosService";
 
 export default function Hero() {
     const { slug } = useParams();
-    const BACKEND_URL = "http://127.0.0.1:8000";
 
     const [kos, setKos] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // FOTO BESAR = FOTO KOS
+    // FOTO BESAR = FOTO KAMAR PERTAMA
     const [activeHero, setActiveHero] = useState("/images/hero.jpg");
 
     // REF THUMBNAIL
@@ -39,26 +38,35 @@ export default function Hero() {
     }, [slug]);
 
     /* ===============================
-       SET FOTO KOS SEKALI
+       SET FOTO HERO (AMAN, TANPA IP)
     =============================== */
     useEffect(() => {
-        if (kos?.photos?.length) {
-            setActiveHero(`${BACKEND_URL}/storage/${kos.photos[0]}`);
+        if (!kos) return;
+
+        const kosPhoto =
+            kos.photos_with_url?.[0]?.url ??
+            (typeof kos.photos?.[0] === "string"
+                ? `${import.meta.env.VITE_API_URL}/storage/${kos.photos[0]}`
+                : null);
+
+        const roomPhoto = kos.rooms?.[0]?.photos?.[0]?.url ?? null;
+
+        if (kosPhoto) {
+            setActiveHero(kosPhoto);
+        } else if (roomPhoto) {
+            setActiveHero(roomPhoto);
         }
     }, [kos]);
+
 
     /* ===============================
        FOTO KAMAR (THUMBNAIL)
     =============================== */
     const roomPhotos = Array.isArray(kos?.rooms)
         ? kos.rooms.flatMap((room) =>
-            (room.photos ?? []).map((photo) =>
-                photo.url
-                    ? photo.url
-                    : photo.path
-                        ? `${BACKEND_URL}/storage/${photo.path}`
-                        : null
-            )
+            (room.photos ?? [])
+                .map((photo) => photo.url)
+                .filter(Boolean)
         )
         : [];
 
@@ -128,17 +136,15 @@ export default function Hero() {
                         </button>
 
                         <div className="hero__thumbRow" ref={thumbRef}>
-                            {roomPhotos
-                                .filter(Boolean)
-                                .map((src, i) => (
-                                    <img
-                                        key={i}
-                                        src={src}
-                                        className="hero__thumb"
-                                        alt={`Foto kamar ${i + 1}`}
-                                        loading="lazy"
-                                    />
-                                ))}
+                            {roomPhotos.map((src, i) => (
+                                <img
+                                    key={i}
+                                    src={src}
+                                    className="hero__thumb"
+                                    alt={`Foto kamar ${i + 1}`}
+                                    loading="lazy"
+                                />
+                            ))}
                         </div>
 
                         <button

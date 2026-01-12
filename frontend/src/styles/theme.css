@@ -19,31 +19,33 @@ body {
 }
 
 :root {
-  /* Colors */
-  --color-primary: #f97316;
-  --color-secondary: #f8f9fa;
-  --color-accent: #ffc107; /* Radius */
-  --radius-pill: 50px; /* Shadows */
+  --primary-color: #f97316;
+  --secondary-color: #0d6efd;
+
+  /* alias lama */
+  --color-primary: var(--primary-color);
+  --color-secondary: var(--secondary-color);
+
+  --color-accent: #ffc107;
+  --radius-pill: 50px;
   --shadow-navbar: 0 1px 0 rgba(0, 0, 0, 0.05);
-  width: 100%;
-  max-width: 100%;
 }
+
 body {
   margin: 0;
   font-family: "Poppins", "Inter", sans-serif;
   font-size: 0.95rem;
   color: #212529;
   background-color: #ffffff;
-  display: block;
-  align-items: unset;
-  justify-content: unset;
 }
+
 .btn-pill {
   padding: 8px 20px;
   border-radius: var(--radius-pill);
 }
+
 .btn-primary {
-  background-color: var(--color-primary);
+  background-color: var(--primary-color);
   border: none;
 }
 .btn-primary:hover {
@@ -70,7 +72,7 @@ body {
 .brand-main {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #f97316; /* ORANGE XML */
+  color: var(--primary-color);
   letter-spacing: 0.4px;
 } /* Kos */
 .brand-sub {
@@ -87,7 +89,7 @@ body {
   transition: color 0.2s ease;
 }
 .navbar-main .nav-link:hover {
-  color: var(--color-primary);
+  color: var(--primary-color);
 }
 .navbar-main .nav-link.active::after {
   content: "";
@@ -96,11 +98,15 @@ body {
   right: 16px;
   bottom: -18px;
   height: 2px;
-  background-color: var(--color-primary);
+  background-color: var(--primary-color);
   border-radius: 2px;
 } /* CTA BUTTON */
 .navbar-main .btn-pill {
-  background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--primary-color)
+  );
   border: none;
   color: #fff;
   font-weight: 600;
@@ -118,7 +124,7 @@ body {
   left: 0;
   width: 100vw;
   height: 2px;
-  background-color: rgba(249, 115, 22, 0.15);
+  background-color: color-mix(in srgb, var(--primary-color), transparent 85%);
 }
 
 @media (max-width: 991px) {
@@ -155,20 +161,21 @@ body {
   .navbar-brand {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
   }
 
   .navbar-brand img,
   .navbar-brand svg {
-    width: 32px;
-    height: 32px;
+    width: 26px;
+    height: 26px;
   }
 
   .navbar-brand span,
   .navbar-brand h1,
   .navbar-brand h5 {
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.2;
+    font-weight: 600;
   }
 
   /* BUTTON HAMBURGER */
@@ -176,11 +183,12 @@ body {
     padding: 6px 8px;
     font-size: 18px;
     border-radius: 8px;
+    transform: scale(0.85);
   }
 
   .navbar-toggler-icon {
-    width: 22px;
-    height: 22px;
+    width: 18px;
+    height: 18px;
   }
 }
 
@@ -246,10 +254,10 @@ body {
 }
 
 .hero__titleBlue {
-  color: #0d6efd;
+  color: var(--secondary-color);
 }
 .hero__titleOrange {
-  color: #f97316;
+  color: var(--primary-color);
 }
 
 .hero__desc {
@@ -310,7 +318,11 @@ body {
   height: 38px;
   border-radius: 50%;
   border: none;
-  background: linear-gradient(135deg, #f97316, #fb923c);
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--primary-color)
+  );
   color: #fff;
   font-size: 20px;
   cursor: pointer;
@@ -484,11 +496,11 @@ body {
 }
 
 .location-title-blue {
-  color: #0d6efd; /* biru */
+  color: var(--secondary-color);
 }
 
 .location-title-orange {
-  color: #f97316; /* oren */
+  color: var(--primary-color);
 }
 
 .location-desc {

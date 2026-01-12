@@ -50,11 +50,11 @@
   font-size: 28px;
   font-weight: 800;
   margin-bottom: 8px;
-  color: #0d6efd;
+  color: var(--secondary-color);
 }
 
 .faq__title span {
-  color: #f97316;
+  color: var(--primary-color);
 }
 
 .faq__subtitle {
@@ -75,16 +75,16 @@
 
 /* ITEM */
 .faq__item {
-  border: 1.5px solid #f97316;
+  border: 1.5px solid var(--primary-color);
   border-radius: 14px;
   background: #ffffff;
   transition: all 0.25s ease;
-  border-color: #f97316 !important;
 }
 
 .faq__item.active {
-  border-color: #f97316;
-  box-shadow: 0 10px 24px rgba(249, 115, 22, 0.15);
+  border-color: var(--primary-color);
+  box-shadow: 0 10px 24px
+    color-mix(in srgb, var(--primary-color), transparent 82%);
 }
 
 /* ===============================
@@ -104,7 +104,7 @@
 
   font-size: 14px;
   font-weight: 600;
-  color: #111;
+  color: var(--primary-color);
 
   transition: color 0.2s ease;
 }
@@ -117,7 +117,7 @@
 .faq__icon {
   font-size: 20px;
   font-weight: 700;
-  color: #f97316;
+  color: var(--primary-color);
   transition: transform 0.25s ease;
 }
 

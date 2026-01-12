@@ -2,7 +2,7 @@ export default function CTA({ kos }) {
     if (!kos) return null;
 
     const logo = kos.logo_url || "/logo/logo.svg";
-    const BACKEND_URL = "http://127.0.0.1:8000";
+
     const ctaTitle =
         kos.cta_title || `Yuk, Mulai Hidup Nyaman di ${kos.nama}`;
 
@@ -40,14 +40,18 @@ export default function CTA({ kos }) {
         ? `https://maps.google.com?q=${mapsQuery}`
         : null;
 
+    // FOTO CTA (AMAN, TANPA BACKEND URL)
+    const ctaBackground =
+        kos.rooms?.[0]?.photos?.[0]?.url || "/images/footer.jpg";
+
     return (
         <section className="cta-orange">
-            <div className="cta-bg"
+            <div
+                className="cta-bg"
                 style={{
-                    backgroundImage: kos.photos?.length
-                        ? `url(${BACKEND_URL}/storage/${kos.photos[0]})`
-                        : `url("/images/footer.jpg")`,
-                }} />
+                    backgroundImage: `url(${ctaBackground})`,
+                }}
+            />
 
             <div className="cta-container">
                 <div className="cta-left">
@@ -131,7 +135,6 @@ export default function CTA({ kos }) {
                         </a>
                     )}
                 </div>
-
             </div>
         </section>
     );

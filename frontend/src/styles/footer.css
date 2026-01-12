@@ -8,14 +8,15 @@
   justify-content: center;
 
   background-color: #ffffff;
-  border-top: 1px solid rgba(249, 115, 22, 0.3);
+
+  border-top: 1px solid
+    color-mix(in srgb, var(--primary-color), transparent 70%);
 
   font-size: 0.85rem;
   font-weight: 500;
-  color: #f97316;
-}
 
-.footer {
+  color: var(--primary-color);
+
   margin-left: calc(-50vw + 50%);
   margin-right: calc(-50vw + 50%);
   width: 100vw;

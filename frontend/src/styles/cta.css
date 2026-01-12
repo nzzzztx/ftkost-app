@@ -10,7 +10,9 @@
   justify-content: center;
 }
 
-/* BACKGROUND */
+/* ===============================
+   BACKGROUND
+================================ */
 .cta-bg {
   position: absolute;
   inset: 0;
@@ -22,7 +24,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(249, 115, 22, 0.85);
+  background: color-mix(in srgb, var(--secondary-color), transparent 15%);
 }
 
 /* ===============================
@@ -63,7 +65,9 @@
   margin-bottom: 16px;
 }
 
-/* SOCIAL */
+/* ===============================
+   SOCIAL
+================================ */
 .cta-social {
   display: flex;
   flex-direction: column;
@@ -76,7 +80,7 @@
   align-items: center;
   gap: 12px;
   font-size: 14px;
-  color: #fff;
+  color: #ffffff;
   text-decoration: none;
 }
 
@@ -84,7 +88,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 1.5px solid #fff;
+  border: 1.5px solid #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -96,8 +100,11 @@
 .cta-center h2 {
   font-size: 26px;
   font-weight: 800;
-  line-height: 1.25;
-  margin-bottom: 16px;
+  color: #ffffff;
+}
+
+.cta-center h2 span {
+  color: var(--primary-color);
 }
 
 .cta-center p {
@@ -111,11 +118,17 @@
 .cta-btn {
   display: inline-block;
   padding: 14px 32px;
-  background: #ffffff;
-  color: #f97316;
+  background: var(--primary-color);
+  color: #ffffff;
   border-radius: 999px;
   font-weight: 700;
   text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.cta-btn:hover {
+  background: color-mix(in srgb, var(--primary-color), #000 12%);
+  transform: translateY(-2px);
 }
 
 /* ===============================
@@ -143,7 +156,9 @@
   opacity: 0.95;
 }
 
-/* MAP CONTAINER */
+/* ===============================
+   MAP CONTAINER
+================================ */
 .cta-map-container {
   position: relative;
   width: 100%;
@@ -170,7 +185,7 @@
   right: -5px;
   bottom: -5px;
   height: 56px;
-  background: rgba(249, 115, 22, 0.95);
+  background: color-mix(in srgb, var(--secondary-color), transparent 5%);
   z-index: 2;
   pointer-events: none;
 }
@@ -178,17 +193,19 @@
 .cta-map-link {
   font-size: 14px;
   font-weight: 600;
-  color: #fff;
+  color: #ffffff;
   text-decoration: underline;
 }
 
+/* ===============================
+   RESPONSIVE
+================================ */
 @media (max-width: 768px) {
   .cta-map-container,
   .cta-map-link {
     display: none;
   }
 
-  /* RAPAPIKAN ALAMAT */
   .cta-right {
     max-width: 100%;
     margin-top: 8px;
@@ -201,7 +218,6 @@
     margin-bottom: 0;
   }
 
-  /* JARAK ANTAR SECTION LEBIH ENAK */
   .cta-container {
     gap: 32px;
   }

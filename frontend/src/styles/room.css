@@ -51,22 +51,23 @@
 }
 
 .room-slide::-webkit-scrollbar-track {
-  background: #fde6d2;
+  background: color-mix(in srgb, var(--primary-color), transparent 85%);
   border-radius: 8px;
 }
 
 .room-slide::-webkit-scrollbar-thumb {
-  background: #fd7e14;
+  background: var(--primary-color);
   border-radius: 8px;
 }
 
 .room-slide::-webkit-scrollbar-thumb:hover {
-  background: #f97316;
+  background: var(--primary-color);
 }
 
 /* Firefox */
 .room-slide {
-  scrollbar-color: #fd7e14 #fde6d2;
+  scrollbar-color: var(--primary-color)
+    color-mix(in srgb, var(--primary-color), transparent 85%);
   scrollbar-width: thin;
 }
 
@@ -98,6 +99,12 @@
   width: 100%;
   height: 220px;
   object-fit: cover;
+  transition: transform 0.25s ease;
+  cursor: zoom-in;
+}
+
+.room-card img:hover {
+  transform: scale(1.01);
 }
 
 /* ======================================================
@@ -121,7 +128,7 @@
 .room-price {
   font-size: 1.15rem;
   font-weight: 700;
-  color: #f97316;
+  color: var(--primary-color);
 }
 
 .room-price span {
@@ -161,27 +168,38 @@
 .room-facilities {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
+  justify-content: flex-start;
+  gap: 8px 8px;
   margin-top: 10px;
+}
+
+/* HILANGKAN SEMUA BULLET FASILITAS */
+.room-facilities,
+.room-facilities ul,
+.room-facilities li {
+  list-style: none !important;
+  margin: 0;
+  padding: 0;
 }
 
 .room-facilities .facility-badge {
   font-size: 12px;
   font-weight: 500;
-  padding: 6px 12px;
+  padding: 5px 10px;
   border-radius: 999px;
 
-  background: rgba(249, 115, 22, 0.12);
-  color: #f97316;
-  border: 1px solid rgba(249, 115, 22, 0.35);
+  background: color-mix(in srgb, var(--primary-color), transparent 88%);
+  color: var(--primary-color);
+  border: 1px solid color-mix(in srgb, var(--primary-color), transparent 65%);
 
   white-space: nowrap;
+  line-height: 1.2;
 }
 
 .room-facilities .facility-badge.more {
-  background: rgba(249, 115, 22, 0.18);
   font-weight: 600;
+  background: color-mix(in srgb, var(--primary-color), transparent 78%);
+  border-style: dashed;
 }
 
 /* ======================================================
@@ -189,7 +207,11 @@
 ====================================================== */
 .room-card .btn {
   margin-top: 14px;
-  background: #fd7e14;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--primary-color)
+  );
   color: #ffffff;
   font-weight: 600;
   border-radius: 999px;
@@ -226,7 +248,11 @@
 }
 
 .text-warning {
-  color: #f97316 !important;
+  color: var(--primary-color) !important;
+}
+
+.text-primary {
+  color: var(--secondary-color) !important;
 }
 
 /* Paksa semua h2 section jadi bold */

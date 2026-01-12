@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 
 import Navbar from "../components/Navbar";
 import RentalRequestForm from "../components/RentalRequestForm";
+import api from "../services/api";
 
 export default function RentalRequestPage() {
     const { roomId } = useParams();
@@ -20,18 +21,20 @@ export default function RentalRequestPage() {
 
         const fetchRoom = async () => {
             try {
-                const res = await fetch(
-                    `http://127.0.0.1:8000/api/rooms/${roomId}`
-                );
+                const res = await api.get(`/rooms/${roomId}`);
+                const data = res?.data ?? null;
 
-                if (!res.ok) {
-                    throw new Error("Gagal mengambil data kamar");
+                if (!data) {
+                    throw new Error("Kamar tidak ditemukan");
                 }
 
-                const data = await res.json();
                 setRoom(data);
             } catch (err) {
-                setError(err.message);
+                setError(
+                    err?.response?.data?.message ||
+                    err.message ||
+                    "Gagal mengambil data kamar"
+                );
             } finally {
                 setLoading(false);
             }

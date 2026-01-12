@@ -10,3 +10,24 @@
 .room-info {
   font-size: 0.9rem;
 }
+
+.rental-page {
+  padding-top: 0;
+}
+
+.rental-page .container.py-5 {
+  padding-top: 12px !important;
+  padding-bottom: 16px !important;
+}
+
+@media (max-width: 576px) {
+  .rental-page .container {
+    padding-top: 12px;
+    padding-bottom: 16px;
+  }
+
+  .rental-form-card {
+    padding: 16px;
+    border-radius: 14px;
+  }
+}

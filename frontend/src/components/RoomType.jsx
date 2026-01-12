@@ -1,10 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
+/* ✅ PhotoSwipe v5 (BENAR) */
+import PhotoSwipeLightbox from "photoswipe/lightbox";
+import "photoswipe/style.css";
+
 export default function RoomType({ kosList = [], loading = false }) {
     const [isMobile, setIsMobile] = useState(false);
     const scrollRef = useRef(null);
-    const BACKEND_URL = "http://127.0.0.1:8000";
+    const galleryRefs = useRef({});
 
     useEffect(() => {
         const handleResize = () => {
@@ -13,10 +17,7 @@ export default function RoomType({ kosList = [], loading = false }) {
 
         handleResize();
         window.addEventListener("resize", handleResize);
-
-        return () => {
-            window.removeEventListener("resize", handleResize);
-        };
+        return () => window.removeEventListener("resize", handleResize);
     }, []);
 
     const normalizedKosList = Array.isArray(kosList)
@@ -32,16 +33,29 @@ export default function RoomType({ kosList = [], loading = false }) {
         }))
     );
 
-    const scroll = (direction) => {
-        if (!scrollRef.current) return;
+    /* 🔥 INIT PHOTOSWIPE PER ROOM */
+    useEffect(() => {
+        Object.values(galleryRefs.current).forEach((el) => {
+            if (!el) return;
 
-        const amount = isMobile ? 360 : 420;
+            const lightbox = new PhotoSwipeLightbox({
+                gallery: el,
+                children: "a",
+                pswpModule: () => import("photoswipe"),
+                bgOpacity: 0.9,
+                wheelToZoom: true,
+                showHideAnimationType: "zoom",
+            });
 
-        scrollRef.current.scrollBy({
-            left: direction === "next" ? amount : -amount,
-            behavior: "smooth",
+            lightbox.init();
         });
-    };
+
+        return () => {
+            Object.values(galleryRefs.current).forEach((el) => {
+                if (el?.pswp) el.pswp.destroy();
+            });
+        };
+    }, [allRooms]);
 
     return (
         <section id="tipe-kamar" className="room-section">
@@ -59,13 +73,8 @@ export default function RoomType({ kosList = [], loading = false }) {
                     </p>
                 </div>
 
-                {/* LIST KAMAR */}
                 {!loading && allRooms.length > 0 && (
-                    <div
-                        id="roomTypeCarousel"
-                        className="room-scroll-wrapper"
-                        ref={scrollRef}
-                    >
+                    <div className="room-scroll-wrapper" ref={scrollRef}>
                         <div className="room-slide">
                             {allRooms.map((room) => (
                                 <div key={room.id} className="room-card-wrapper">
@@ -77,25 +86,33 @@ export default function RoomType({ kosList = [], loading = false }) {
                                             className="carousel slide room-carousel"
                                             data-bs-interval="false"
                                         >
-                                            <div className="carousel-inner">
+                                            <div
+                                                className="carousel-inner"
+                                                ref={(el) => (galleryRefs.current[room.id] = el)}
+                                            >
                                                 {Array.isArray(room.photos) && room.photos.length > 0 ? (
                                                     room.photos.map((photo, i) => {
                                                         const src =
                                                             photo?.url ??
-                                                            (photo?.path
-                                                                ? `${BACKEND_URL}/storage/${photo.path}`
-                                                                : "/images/room-placeholder.jpg");
+                                                            "/images/room-placeholder.jpg";
 
                                                         return (
                                                             <div
                                                                 key={i}
                                                                 className={`carousel-item ${i === 0 ? "active" : ""}`}
                                                             >
-                                                                <img
-                                                                    src={src}
-                                                                    alt={room.nama}
-                                                                    loading="lazy"
-                                                                />
+                                                                <a
+                                                                    href={src}
+                                                                    data-pswp-width="1600"
+                                                                    data-pswp-height="1000"
+                                                                >
+                                                                    <img
+                                                                        src={src}
+                                                                        alt={room.nama}
+                                                                        loading="lazy"
+                                                                        style={{ cursor: "zoom-in" }}
+                                                                    />
+                                                                </a>
                                                             </div>
                                                         );
                                                     })
@@ -165,7 +182,6 @@ export default function RoomType({ kosList = [], loading = false }) {
                                                             {f.name}
                                                         </li>
                                                     ))}
-
                                                     {room.facilities.length > 8 && (
                                                         <li className="facility-badge more">
                                                             +{room.facilities.length - 8} lainnya

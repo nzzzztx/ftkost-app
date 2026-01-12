@@ -1,14 +1,17 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useKos } from "../contexts/KosContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export default function UserLayout() {
     const kos = useKos();
+    const location = useLocation();
+
+    const isKosPage = location.pathname.startsWith("/kos");
 
     return (
         <>
-            <Navbar kos={kos} />
+            {!isKosPage && <Navbar kos={kos} />}
 
             <main className="page-wrapper">
                 <Outlet />
