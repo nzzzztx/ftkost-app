@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 
 export default function Navbar({ kos = null }) {
@@ -12,8 +13,31 @@ export default function Navbar({ kos = null }) {
         return isRentalPage ? `/kos/${currentSlug}${hash}` : hash;
     };
 
-    const kosName = kos?.nama ?? "XML Kos";
-    const kosLogo = kos?.logo_url ?? "/logo/logo.svg";
+    const kosName = kos?.nama || "XML Kos";
+
+    const kosLogo = (() => {
+        if (typeof kos?.logo_url === "string" && kos.logo_url.startsWith("http")) {
+            return kos.logo_url;
+        }
+
+        if (typeof kos?.logo === "string" && kos.logo.startsWith("http")) {
+            return kos.logo;
+        }
+
+        if (typeof kos?.logo === "string" && kos.logo.length > 0) {
+            return `${import.meta.env.VITE_API_URL}/storage/${kos.logo}`;
+        }
+
+        return "/logo/logo.svg";
+    })();
+
+
+
+    useEffect(() => {
+        console.log("NAVBAR KOS:", kos);
+        console.log("NAVBAR LOGO_URL:", kos?.logo_url);
+    }, [kos]);
+
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white fixed-top navbar-main">

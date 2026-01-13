@@ -62,6 +62,7 @@ body {
   width: 40px;
   height: 40px;
   object-fit: contain;
+  gap: 10px;
 } /* Text wrapper */
 .navbar-brand-text {
   display: flex;
@@ -341,7 +342,7 @@ body {
 ========================= */
 .hero__facilities {
   margin-top: 18px;
-  background: #0b74c9;
+  background: var(--secondary-color);
   border-radius: 14px;
   padding: 18px;
   color: #fff;
@@ -374,7 +375,7 @@ body {
   width: 30px;
   height: 30px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--primary-color);
   display: inline-flex;
   align-items: center;
   justify-content: center;

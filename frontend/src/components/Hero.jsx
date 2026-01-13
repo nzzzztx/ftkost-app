@@ -43,21 +43,13 @@ export default function Hero() {
     useEffect(() => {
         if (!kos) return;
 
-        const kosPhoto =
-            kos.photos_with_url?.[0]?.url ??
-            (typeof kos.photos?.[0] === "string"
-                ? `${import.meta.env.VITE_API_URL}/storage/${kos.photos[0]}`
-                : null);
+        const hero =
+            kos.hero_photo ??
+            kos.rooms?.[0]?.photos?.[0]?.url ??
+            "/images/hero.jpg";
 
-        const roomPhoto = kos.rooms?.[0]?.photos?.[0]?.url ?? null;
-
-        if (kosPhoto) {
-            setActiveHero(kosPhoto);
-        } else if (roomPhoto) {
-            setActiveHero(roomPhoto);
-        }
+        setActiveHero(hero);
     }, [kos]);
-
 
     /* ===============================
        FOTO KAMAR (THUMBNAIL)

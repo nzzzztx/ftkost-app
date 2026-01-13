@@ -1,7 +1,7 @@
 export default function CTA({ kos }) {
     if (!kos) return null;
 
-    const logo = kos.logo_url || "/logo/logo.svg";
+    const logo = kos.logo || "/logo/logo.svg";
 
     const ctaTitle =
         kos.cta_title || `Yuk, Mulai Hidup Nyaman di ${kos.nama}`;
@@ -42,7 +42,10 @@ export default function CTA({ kos }) {
 
     // FOTO CTA (AMAN, TANPA BACKEND URL)
     const ctaBackground =
-        kos.rooms?.[0]?.photos?.[0]?.url || "/images/footer.jpg";
+        kos.hero_photo ||
+        kos.rooms?.[0]?.photos?.[0]?.url ||
+        "/images/footer.jpg";
+
 
     return (
         <section className="cta-orange">
@@ -57,8 +60,11 @@ export default function CTA({ kos }) {
                 <div className="cta-left">
                     <img
                         src={logo}
-                        alt={kos.nama}
+                        alt={kos?.nama}
                         className="cta-logo"
+                        onError={(e) => {
+                            e.currentTarget.src = "/logo/logo.svg";
+                        }}
                     />
 
                     <div className="cta-social">

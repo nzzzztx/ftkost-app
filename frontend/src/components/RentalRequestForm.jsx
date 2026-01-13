@@ -73,13 +73,25 @@ export default function RentalRequestForm({ room }) {
         <div className="rental-form-card">
             <h4 className="mb-3">Form Permintaan Sewa</h4>
 
-            {/* INFO KAMAR */}
             <div className="room-info mb-4">
                 <strong>{room.nama}</strong>
                 <div className="text-muted">{room.kos?.nama}</div>
             </div>
 
-            {/* PESAN SUKSES */}
+            <div className="d-flex align-items-center gap-2 mb-2">
+                <h5 className="mb-0">{room.nama}</h5>
+
+                {room.is_available ? (
+                    <span className="badge bg-success">
+                        Tersedia
+                    </span>
+                ) : (
+                    <span className="badge bg-danger">
+                        Kamar Habis
+                    </span>
+                )}
+            </div>
+
             {success && (
                 <div className="alert alert-success">
                     <strong>Terima kasih 🙏</strong>
@@ -90,13 +102,13 @@ export default function RentalRequestForm({ room }) {
             )}
 
             <form onSubmit={handleSubmit}>
-                {/* HIDDEN */}
                 <input type="hidden" name="room_id" value={form.room_id} />
                 <input type="hidden" name="kos_slug" value={form.kos_slug} />
 
-                {/* PILIH TIPE SEWA */}
                 <div className="mb-3">
-                    <label className="form-label fw-semibold">Pilih Tipe Sewa</label>
+                    <label className="form-label fw-semibold">
+                        Pilih Tipe Sewa
+                    </label>
 
                     <div className="form-check">
                         <input
@@ -108,8 +120,12 @@ export default function RentalRequestForm({ room }) {
                             onChange={handleChange}
                             id="sewaBulanan"
                         />
-                        <label className="form-check-label" htmlFor="sewaBulanan">
-                            Bulanan – Rp {room.harga_bulanan.toLocaleString("id-ID")} / bulan
+                        <label
+                            className="form-check-label"
+                            htmlFor="sewaBulanan"
+                        >
+                            Bulanan – Rp{" "}
+                            {room.harga_bulanan.toLocaleString("id-ID")} / bulan
                         </label>
                     </div>
 
@@ -123,13 +139,16 @@ export default function RentalRequestForm({ room }) {
                             onChange={handleChange}
                             id="sewaHarian"
                         />
-                        <label className="form-check-label" htmlFor="sewaHarian">
-                            Harian – Rp {room.harga_harian.toLocaleString("id-ID")} / hari
+                        <label
+                            className="form-check-label"
+                            htmlFor="sewaHarian"
+                        >
+                            Harian – Rp{" "}
+                            {room.harga_harian.toLocaleString("id-ID")} / hari
                         </label>
                     </div>
                 </div>
 
-                {/* INPUT */}
                 <div className="mb-3">
                     <label className="form-label">Nama Lengkap</label>
                     <input
@@ -188,14 +207,22 @@ export default function RentalRequestForm({ room }) {
                     />
                 </div>
 
-                {error && <div className="alert alert-danger">{error}</div>}
+                {error && (
+                    <div className="alert alert-danger">
+                        {error}
+                    </div>
+                )}
 
                 <button
                     type="submit"
                     className="btn btn-warning w-100 fw-bold"
-                    disabled={loading}
+                    disabled={loading || !room.is_available}
                 >
-                    {loading ? "Mengirim..." : "Kirim Permintaan"}
+                    {!room.is_available
+                        ? "Kamar Tidak Tersedia"
+                        : loading
+                            ? "Mengirim..."
+                            : "Kirim Permintaan"}
                 </button>
             </form>
         </div>

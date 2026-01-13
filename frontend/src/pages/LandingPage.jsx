@@ -39,7 +39,40 @@ export default function LandingPage() {
         };
     }, [slug]);
 
-    // 🔥 INI TEMPAT SET WARNA LANDING
+    useEffect(() => {
+        if (!kos) return;
+
+        document.title = kos.nama ?? "XML Kos";
+
+        const faviconUrl =
+            kos.logo_url || kos.logo || "/logo-depan.jpg";
+
+        if (!faviconUrl) return;
+
+        document
+            .querySelectorAll(
+                "link[rel='icon'], link[rel='shortcut icon'], link[rel='apple-touch-icon']"
+            )
+            .forEach(el => el.remove());
+
+        const icon = document.createElement("link");
+        icon.rel = "icon";
+        icon.type = "image/png";
+        icon.href = faviconUrl + "?v=" + Date.now();
+
+        const shortcut = document.createElement("link");
+        shortcut.rel = "shortcut icon";
+        shortcut.href = icon.href;
+
+        const apple = document.createElement("link");
+        apple.rel = "apple-touch-icon";
+        apple.href = icon.href;
+
+        document.head.append(icon, shortcut, apple);
+    }, [kos]);
+
+
+
     useEffect(() => {
         if (!kos) return;
 
@@ -61,7 +94,12 @@ export default function LandingPage() {
             <Location kos={kos} />
             <RoomType kosList={[kos]} loading={loading} />
             <Testimoni />
-            <Faq />
+            <Faq
+                faqs={kos.faqs}
+                primaryColor={kos.primary_color}
+                secondaryColor={kos.secondary_color}
+                kos={kos}
+            />
             <CTA kos={kos} />
         </KosProvider>
     );

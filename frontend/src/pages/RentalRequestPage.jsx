@@ -13,6 +13,14 @@ export default function RentalRequestPage() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        if (!room?.kos) return;
+
+        const root = document.documentElement;
+        root.style.setProperty("--primary-color", room.kos.primary_color);
+        root.style.setProperty("--secondary-color", room.kos.secondary_color);
+    }, [room]);
+
+    useEffect(() => {
         if (!roomId) {
             setError("Room ID tidak valid");
             setLoading(false);

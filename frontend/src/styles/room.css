@@ -1,15 +1,9 @@
-/* ======================================================
-   ROOM SECTION
-====================================================== */
 .room-section {
   position: relative;
   background-color: #ffffff;
   margin-bottom: 80px;
 }
 
-/* ======================================================
-   HEADER
-====================================================== */
 .room-header {
   max-width: 720px;
   margin: 0 auto 48px;
@@ -17,9 +11,6 @@
   text-align: center;
 }
 
-/* ======================================================
-   CARD LIST (HORIZONTAL SCROLL)
-====================================================== */
 .room-slide {
   display: grid;
   grid-auto-flow: column;
@@ -40,10 +31,6 @@
   overscroll-behavior-x: contain;
   -webkit-overflow-scrolling: touch;
 }
-
-/* ======================================================
-   SCROLLBAR – SEMUA DEVICE
-====================================================== */
 
 /* Chrome / Edge / Safari */
 .room-slide::-webkit-scrollbar {
@@ -71,9 +58,6 @@
   scrollbar-width: thin;
 }
 
-/* ======================================================
-   CARD
-====================================================== */
 .room-card-wrapper {
   scroll-snap-align: start;
   width: 100%;
@@ -92,9 +76,6 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 }
 
-/* ======================================================
-   IMAGE (INNER CAROUSEL ONLY)
-====================================================== */
 .room-card img {
   width: 100%;
   height: 220px;
@@ -107,9 +88,6 @@
   transform: scale(1.01);
 }
 
-/* ======================================================
-   BODY
-====================================================== */
 .room-body {
   padding: 20px;
   text-align: center;
@@ -123,6 +101,7 @@
 .room-title {
   font-weight: 700;
   margin-bottom: 4px;
+  color: var(--primary-color);
 }
 
 .room-price {
@@ -134,18 +113,14 @@
 .room-price span {
   font-size: 0.8rem;
   font-weight: 500;
-  color: #6b7280;
 }
 
 .room-price-daily {
   font-size: 0.85rem;
-  color: #374151;
+  color: var(--secondary-color);
   margin-bottom: 10px;
 }
 
-/* ======================================================
-   META TAG
-====================================================== */
 .room-meta {
   display: flex;
   flex-wrap: wrap;
@@ -162,9 +137,6 @@
   color: #1f2937;
 }
 
-/* ======================================================
-   FASILITAS (ORANGE CHIP)
-====================================================== */
 .room-facilities {
   display: flex;
   flex-wrap: wrap;
@@ -202,9 +174,6 @@
   border-style: dashed;
 }
 
-/* ======================================================
-   CTA
-====================================================== */
 .room-card .btn {
   margin-top: 14px;
   background: linear-gradient(
@@ -216,10 +185,6 @@
   font-weight: 600;
   border-radius: 999px;
 }
-
-/* ======================================================
-   RESPONSIVE
-====================================================== */
 
 /* Desktop: 3 card */
 @media (min-width: 992px) {

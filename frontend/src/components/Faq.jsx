@@ -1,7 +1,8 @@
 import { useState } from "react";
 import "../styles/faq.css";
 
-const faqs = [
+/* ===== FAQ DEFAULT (JANGAN DIHAPUS) ===== */
+const defaultFaqs = [
     {
         q: "Bagaimana cara mendaftar atau reservasi kamar di XML Kos?",
         a: "Kamu bisa langsung menghubungi Customer Service melalui tombol WhatsApp yang tersedia."
@@ -28,14 +29,31 @@ const faqs = [
     }
 ];
 
-export default function Faq() {
+export default function Faq({ faqs = [], primaryColor, secondaryColor, kos }) {
     const [active, setActive] = useState(null);
+
+    const faqImage =
+        kos?.hero_photo ??
+        kos?.logo ??
+        "/images/faq.jpg";
+
+    const safeFaqs =
+        Array.isArray(faqs) && faqs.length > 0
+            ? faqs.map(item => ({
+                q: item.question,
+                a: item.answer,
+            }))
+            : defaultFaqs;
 
     return (
         <section id="faq" className="faq">
             <div className="faq__container">
                 <div className="faq__image">
-                    <img src="/images/faq.jpg" alt="FAQ Kos" />
+                    <img
+                        src={faqImage}
+                        alt={`FAQ ${kos?.nama ?? "Kos"}`}
+                        loading="lazy"
+                    />
                 </div>
 
                 <div className="faq__content">
@@ -47,7 +65,7 @@ export default function Faq() {
                     </p>
 
                     <div className="faq__list">
-                        {faqs.map((item, i) => (
+                        {safeFaqs.map((item, i) => (
                             <div
                                 key={i}
                                 className={`faq__item ${active === i ? "active" : ""}`}
